@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silly Ducks</title>
+  <style>
+    :root {
+      --duck-yellow: #ffd43b;
+      --duck-yellow-soft: #fff3b0;
+      --duck-orange: #ff922b;
+      --text-dark: #4a3b00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Arial Rounded MT Bold", "Comic Sans MS", cursive;
+      background: radial-gradient(circle at top, var(--duck-yellow-soft), var(--duck-yellow));
+      color: var(--text-dark);
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    body::before {
+      content: "🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆";
+      white-space: pre;
+      position: fixed;
+      inset: 0;
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      line-height: 2.2;
+      opacity: 0.2;
+      text-align: center;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.55);
+      border: 3px solid rgba(255, 146, 43, 0.7);
+      border-radius: 1.25rem;
+      padding: 2rem 2.5rem;
+      max-width: 700px;
+      width: 100%;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    h1 {
+      margin: 0 0 1.25rem;
+      font-size: clamp(2.5rem, 8vw, 5.2rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: #fff8d1;
+      -webkit-text-stroke: 2px var(--duck-orange);
+      text-shadow: 0 4px 0 rgba(255, 146, 43, 0.55), 0 8px 14px rgba(74, 59, 0, 0.35);
+    }
+
+    section h2 {
+      margin: 0;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      text-transform: lowercase;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Silly Ducks</h1>
+    <section>
+      <h2>upgrades &amp; skins</h2>
+    </section>
+  </main>
+</body>
+</html>
