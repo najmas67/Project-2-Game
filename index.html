@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Silly Ducks!</title>
+  <link href="https://fonts.cdnfonts.com/css/milkyway" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="emoji-layer" aria-hidden="true"></div>
+
+  <main class="app">
+    <header class="hero">
+      <h1 class="game-title">Silly Ducks!</h1>
+      <p class="tagline">Click your duck. Grow your flock. Become absurdly quack-rich.</p>
+    </header>
+
+    <section class="stats" aria-label="Game stats">
+      <article class="stat-card">
+        <h2>Total Ducks !</h2>
+        <p id="duckCount" class="stat-value">0</p>
+      </article>
+      <article class="stat-card">
+        <h2>Ducks per Click !</h2>
+        <p id="ducksPerClick" class="stat-value">1</p>
+      </article>
+      <article class="stat-card">
+        <h2>Auto Ducks / Sec !</h2>
+        <p id="autoPerSecond" class="stat-value">0</p>
+      </article>
+    </section>
+
+    <section class="click-zone" aria-label="Click zone">
+      <button id="duckButton" class="duck-button" aria-label="Collect ducks">
+        <img src="images/Untitled-1-2.png" class="duck-image" alt="Duck" />
+        <span class="duck-label">Collect Ducks !</span>
+      </button>
+      <p id="floatingTextAnchor" class="floating-anchor" aria-hidden="true"></p>
+    </section>
+
+    <section class="upgrades" aria-label="Upgrades">
+      <div class="upgrades-head">
+        <h2>Upgrades</h2>
+        <p>Spend ducks to increase click speed and click value.</p>
+      </div>
+
+      <div id="upgradeList" class="upgrade-list"></div>
+    </section>
+  </main>
+
+  <template id="upgradeTemplate">
+    <article class="upgrade-card">
+      <div class="upgrade-info">
+        <h3 class="upgrade-name"></h3>
+        <p class="upgrade-desc"></p>
+      </div>
+      <div class="upgrade-actions">
+        <p class="upgrade-level">Level: <span class="upgrade-level-value">0</span></p>
+        <p class="upgrade-cost">Cost: <span class="upgrade-cost-value">0</span> ducks</p>
+        <button class="upgrade-buy">Buy</button>
+      </div>
+    </article>
+  </template>
+
+  <button id="tutorialButton" class="tutorial-button" type="button" aria-label="Open tutorial">Tutorial</button>
+
+  <section id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+    <article class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+      <h2 id="tutorialTitle">How to Play</h2>
+      <ol class="tutorial-steps">
+        <li>Click the duck button to collect ducks.</li>
+        <li>Use your ducks to buy upgrades.</li>
+        <li>Upgrades increase ducks per click and auto ducks per second.</li>
+        <li>Keep clicking and upgrading to grow your duck empire.</li>
+      </ol>
+      <div class="tutorial-actions">
+        <button id="closeTutorialButton" class="tutorial-close" type="button">Let me play</button>
+      </div>
+    </article>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
