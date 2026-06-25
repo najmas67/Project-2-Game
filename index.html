@@ -3,84 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Silly Ducks</title>
-  <style>
-    :root {
-      --duck-yellow: #ffd43b;
-      --duck-yellow-soft: #fff3b0;
-      --duck-orange: #ff922b;
-      --text-dark: #4a3b00;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Trebuchet MS", "Arial Rounded MT Bold", "Comic Sans MS", cursive;
-      background: radial-gradient(circle at top, var(--duck-yellow-soft), var(--duck-yellow));
-      color: var(--text-dark);
-      position: relative;
-      overflow-x: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    body::before {
-      content: "🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆";
-      white-space: pre;
-      position: fixed;
-      inset: 0;
-      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-      line-height: 2.2;
-      opacity: 0.2;
-      text-align: center;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    main {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.55);
-      border: 3px solid rgba(255, 146, 43, 0.7);
-      border-radius: 1.25rem;
-      padding: 2rem 2.5rem;
-      max-width: 700px;
-      width: 100%;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    h1 {
-      margin: 0 0 1.25rem;
-      font-size: clamp(2.5rem, 8vw, 5.2rem);
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      color: #fff8d1;
-      -webkit-text-stroke: 2px var(--duck-orange);
-      text-shadow: 0 4px 0 rgba(255, 146, 43, 0.55), 0 8px 14px rgba(74, 59, 0, 0.35);
-    }
-
-    section h2 {
-      margin: 0;
-      font-size: clamp(1.4rem, 4vw, 2rem);
-      text-transform: lowercase;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-  </style>
+  <title>Silly Ducks!</title>
+  <link href="https://fonts.cdnfonts.com/css/milkyway" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <main>
-    <h1>Silly Ducks</h1>
-    <section>
-      <h2>upgrades &amp; skins</h2>
+  <main class="app">
+    <header class="hero">
+      <h1 class="game-title">Silly Ducks!</h1>
+      <p class="tagline">Click your duck. Grow your flock. Become absurdly quack-rich.</p>
+    </header>
+
+    <section class="stats" aria-label="Game stats">
+      <article class="stat-card">
+        <h2>Total Ducks !</h2>
+        <p id="duckCount" class="stat-value">0</p>
+      </article>
+      <article class="stat-card">
+        <h2>Ducks per Click !</h2>
+        <p id="ducksPerClick" class="stat-value">1</p>
+      </article>
+      <article class="stat-card">
+        <h2>Auto Ducks / Sec !</h2>
+        <p id="autoPerSecond" class="stat-value">0</p>
+      </article>
+    </section>
+
+    <section class="click-zone" aria-label="Click zone">
+      <button id="duckButton" class="duck-button" aria-label="Collect ducks">
+        <img src="images/Untitled-1-2.png" class="duck-image" alt="Duck" />
+        <span class="duck-label">Collect Ducks !</span>
+      </button>
+      <p id="floatingTextAnchor" class="floating-anchor" aria-hidden="true"></p>
+    </section>
+
+    <section class="upgrades" aria-label="Upgrades">
+      <div class="upgrades-head">
+        <h2>Upgrades</h2>
+        <p>Spend ducks to increase click speed and click value.</p>
+      </div>
+
+      <div id="upgradeList" class="upgrade-list"></div>
     </section>
   </main>
+
+  <template id="upgradeTemplate">
+    <article class="upgrade-card">
+      <div class="upgrade-info">
+        <h3 class="upgrade-name"></h3>
+        <p class="upgrade-desc"></p>
+      </div>
+      <div class="upgrade-actions">
+        <p class="upgrade-level">Level: <span class="upgrade-level-value">0</span></p>
+        <p class="upgrade-cost">Cost: <span class="upgrade-cost-value">0</span> ducks</p>
+        <button class="upgrade-buy">Buy</button>
+      </div>
+    </article>
+  </template>
+
+  <button id="tutorialButton" class="tutorial-button" type="button" aria-label="Open tutorial">Tutorial</button>
+
+  <section id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+    <article class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+      <h2 id="tutorialTitle">How to Play</h2>
+      <ol class="tutorial-steps">
+        <li>Click the duck button to collect ducks.</li>
+        <li>Use your ducks to buy upgrades.</li>
+        <li>Upgrades increase ducks per click and auto ducks per second.</li>
+        <li>Keep clicking and upgrading to grow your duck empire.</li>
+      </ol>
+      <div class="tutorial-actions">
+        <button id="closeTutorialButton" class="tutorial-close" type="button">Let me play</button>
+      </div>
+    </article>
+  </section>
+
+  <script src="script.js"></script>
 </body>
 </html>
