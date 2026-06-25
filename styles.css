@@ -19,20 +19,112 @@ body {
   min-height: 100vh;
   font-family: "Fredoka", sans-serif;
   color: var(--text);
-  background: #ffd84d;
+  background: linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%);
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 22px;
+}
+
+body::before {
+  inset: 8px;
+  border: 9px solid rgba(255, 241, 183, 0.92);
+  background:
+    radial-gradient(circle at 0 50%, transparent 16px, rgba(193, 128, 0, 0.66) 17px, rgba(193, 128, 0, 0.66) 20px, transparent 21px) 0 0 / 36px 36px,
+    radial-gradient(circle at 100% 50%, transparent 16px, rgba(193, 128, 0, 0.66) 17px, rgba(193, 128, 0, 0.66) 20px, transparent 21px) 0 18px / 36px 36px;
+  opacity: 0.82;
+}
+
+body::after {
+  inset: 24px;
+  border: 6px solid rgba(132, 82, 0, 0.76);
+  background:
+    radial-gradient(circle at 0 50%, transparent 12px, rgba(255, 228, 120, 0.72) 13px, rgba(255, 228, 120, 0.72) 16px, transparent 17px) 0 0 / 28px 28px,
+    radial-gradient(circle at 100% 50%, transparent 12px, rgba(255, 228, 120, 0.72) 13px, rgba(255, 228, 120, 0.72) 16px, transparent 17px) 0 14px / 28px 28px;
+  opacity: 0.7;
 }
 
 .emoji-layer {
-  display: none;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  background-image: url("Untitled-1-2.png");
+  background-repeat: repeat;
+  background-size: 30px 30px;
+  background-position: center;
+  filter: saturate(0.95) contrast(0.95);
 }
 
 .app {
   width: min(980px, 92vw);
   margin: 0 auto;
-  padding: 1.5rem 0 2.5rem;
+  padding: 3.8rem 0 2.5rem;
   position: relative;
-  z-index: 1;
+  z-index: 10;
+}
+
+.menu-toggle {
+  position: fixed;
+  top: 1.2rem;
+  right: 1.2rem;
+  width: 54px;
+  height: 54px;
+  border: 2px solid #986300;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #fff0a6 0%, #ffc842 100%);
+  box-shadow: 0 8px 16px rgba(106, 67, 0, 0.3);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.menu-toggle span {
+  width: 26px;
+  height: 3px;
+  border-radius: 999px;
+  background: #6c4200;
+}
+
+.menu-panel {
+  position: fixed;
+  top: 4.9rem;
+  right: 1.2rem;
+  min-width: 180px;
+  border: 2px solid #a26a00;
+  border-radius: 14px;
+  padding: 0.5rem;
+  background: rgba(255, 244, 188, 0.98);
+  box-shadow: 0 12px 20px rgba(109, 69, 0, 0.28);
+  z-index: 25;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.menu-link {
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  font-family: "Baloo 2", cursive;
+  font-size: 1.05rem;
+  text-align: left;
+  color: #603800;
+  background: linear-gradient(180deg, #ffe889 0%, #ffcc4f 100%);
+  cursor: pointer;
+}
+
+.menu-link:hover {
+  filter: brightness(1.04);
 }
 
 .hero {
@@ -43,7 +135,7 @@ body {
 
 .game-title {
   margin: 0;
-  font-family: "Milkyway", "Baloo 2", cursive;
+  font-family: "Fuzzy Bubbles", "Baloo 2", cursive;
   font-size: clamp(3rem, 9vw, 6rem);
   line-height: 0.95;
   color: #ffde59;
@@ -126,14 +218,14 @@ body {
 }
 
 .duck-image {
-  width: clamp(38px, 8vw, 52px);
-  height: clamp(38px, 8vw, 52px);
+  width: clamp(52px, 10vw, 72px);
+  height: clamp(52px, 10vw, 72px);
   object-fit: contain;
-  border-radius: 10px;
   border: none;
-  opacity: 0.9;
-  mix-blend-mode: multiply;
-  filter: saturate(0.92) contrast(0.96);
+  border-radius: 0;
+  opacity: 1;
+  mix-blend-mode: normal;
+  filter: none;
 }
 
 .duck-label {
@@ -167,6 +259,15 @@ body {
   border-radius: 20px;
   padding: 1rem;
   box-shadow: var(--shadow);
+  scroll-margin-top: 6.2rem;
+}
+
+#skinsSection {
+  margin-top: 1rem;
+}
+
+.section-flash {
+  animation: sectionFlash 560ms ease-out;
 }
 
 .upgrades-head h2 {
@@ -349,6 +450,22 @@ body {
   }
 }
 
+@keyframes sectionFlash {
+  0% {
+    transform: scale(0.995);
+    box-shadow: 0 0 0 rgba(227, 185, 66, 0);
+  }
+
+  45% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(227, 185, 66, 0.38);
+  }
+
+  100% {
+    box-shadow: var(--shadow);
+  }
+}
+
 @media (max-width: 780px) {
   .stats {
     grid-template-columns: 1fr;
@@ -368,5 +485,23 @@ body {
   .tutorial-button {
     right: 0.75rem;
     bottom: 0.75rem;
+  }
+
+  body::before {
+    inset: 6px;
+  }
+
+  body::after {
+    inset: 16px;
+  }
+
+  .menu-toggle {
+    top: 0.9rem;
+    right: 0.9rem;
+  }
+
+  .menu-panel {
+    top: 4.5rem;
+    right: 0.9rem;
   }
 }
