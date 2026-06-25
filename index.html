@@ -7,7 +7,7 @@
   <link href="https://fonts.cdnfonts.com/css/milkyway" rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Fredoka:wght@400;600;700&family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Bubblegum+Sans&family=Fredoka:wght@400;600;700&family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -22,6 +22,7 @@
   <nav id="menuPanel" class="menu-panel" aria-label="Sections" hidden>
     <button class="menu-link" type="button" data-target="upgradesSection">Upgrades !</button>
     <button class="menu-link" type="button" data-target="skinsSection">Skins !</button>
+    <button class="menu-link" type="button" data-target="ranksSection">Ranks !</button>
   </nav>
 
   <main class="app">
@@ -70,7 +71,25 @@
 
       <div id="skinList" class="upgrade-list"></div>
     </section>
+
+    <section id="ranksSection" class="upgrades" aria-label="Ranks" hidden>
+      <div class="upgrades-head">
+        <h2>Ranks !</h2>
+        <p>Climb the duck ladder based on your total ducks collected.</p>
+      </div>
+
+      <article class="upgrade-card rank-current-card">
+        <div class="upgrade-info">
+          <h3>Current Rank: <span id="currentRank">Unranked</span></h3>
+          <p id="nextRankNeed">Reach 1,000 total ducks to unlock your first rank.</p>
+        </div>
+      </article>
+
+      <div id="rankList" class="upgrade-list"></div>
+    </section>
   </main>
+
+  <div id="rankNotificationLayer" class="rank-notification-layer" aria-live="polite" aria-atomic="true"></div>
 
   <template id="upgradeTemplate">
     <article class="upgrade-card">
