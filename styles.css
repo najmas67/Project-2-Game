@@ -55,12 +55,20 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.13;
-  background-image: url("Untitled-1-2.png");
-  background-repeat: repeat;
-  background-size: 30px 30px;
-  background-position: center;
-  filter: saturate(0.95) contrast(0.95);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.emoji-layer::before {
+  content: "🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆";
+  position: absolute;
+  inset: -12%;
+  white-space: pre;
+  font-size: clamp(1rem, 2.3vw, 1.45rem);
+  line-height: 2.15;
+  letter-spacing: 0.3rem;
+  opacity: 0.18;
+  transform: rotate(-7deg) scale(1.08);
 }
 
 .app {
@@ -139,6 +147,7 @@ body::after {
   font-size: clamp(3rem, 9vw, 6rem);
   line-height: 0.95;
   color: #ffde59;
+  animation: titleFloat 3.2s ease-in-out infinite;
   text-shadow:
     -3px -3px 0 #8a5800,
     3px -3px 0 #8a5800,
@@ -192,12 +201,15 @@ body::after {
 .duck-button {
   border: none;
   border-radius: 24px;
-  background: radial-gradient(circle at 25% 20%, #fff4b5 0%, #ffd95f 42%, #f0b400 100%);
+  --clicker-bg: radial-gradient(circle at 25% 20%, #fff4b5 0%, #ffd95f 42%, #f0b400 100%);
+  --clicker-shadow-edge: #c78400;
+  --clicker-text: #713f00;
+  background: var(--clicker-bg);
   padding: 1.2rem 1.6rem;
   width: min(370px, 90vw);
   min-height: 130px;
   box-shadow:
-    0 8px 0 #c78400,
+    0 8px 0 var(--clicker-shadow-edge),
     0 13px 24px rgba(124, 74, 0, 0.45);
   display: grid;
   place-items: center;
@@ -213,26 +225,21 @@ body::after {
 .duck-button:active {
   transform: translateY(4px) scale(0.99);
   box-shadow:
-    0 4px 0 #c78400,
+    0 4px 0 var(--clicker-shadow-edge),
     0 8px 16px rgba(124, 74, 0, 0.4);
 }
 
-.duck-image {
-  width: clamp(52px, 10vw, 72px);
-  height: clamp(52px, 10vw, 72px);
-  object-fit: contain;
-  border: none;
-  border-radius: 0;
-  opacity: 1;
-  mix-blend-mode: normal;
-  filter: none;
+.duck-emoji {
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(100, 58, 0, 0.25));
 }
 
 .duck-label {
   font-family: "Baloo 2", cursive;
   font-size: 1.9rem;
   font-weight: 700;
-  color: #713f00;
+  color: var(--clicker-text);
 }
 
 .floating-anchor {
@@ -366,8 +373,7 @@ body::after {
 .tutorial-overlay {
   position: fixed;
   inset: 0;
-  display: grid;
-  place-items: center;
+  display: block;
   z-index: 30;
   padding: 1rem;
   background: rgba(47, 28, 0, 0.42);
@@ -379,11 +385,15 @@ body::after {
 
 .tutorial-card {
   width: min(520px, 92vw);
+  position: fixed;
   background: #fff5d6;
   border: 2px solid #e2bd56;
   border-radius: 18px;
   box-shadow: 0 14px 28px rgba(66, 39, 0, 0.38);
   padding: 1rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .tutorial-card h2 {
@@ -392,20 +402,52 @@ body::after {
   font-size: 1.9rem;
 }
 
-.tutorial-steps {
-  margin: 0.6rem 0 0;
-  padding-left: 1.3rem;
+.tutorial-mascot-row {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.tutorial-steps li {
-  margin-bottom: 0.45rem;
+.tutorial-mascot {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ffe986, #ffc93f);
+  border: 2px solid #9c6500;
+  font-size: 2rem;
+}
+
+.tutorial-speech {
+  background: #fff0bf;
+  border: 2px solid #d8ae3f;
+  border-radius: 14px;
+  padding: 0.6rem 0.7rem;
+}
+
+.tutorial-step-meta {
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7a4b00;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tutorial-text {
+  margin: 0.3rem 0 0;
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .tutorial-actions {
   margin-top: 0.9rem;
   display: flex;
   justify-content: flex-end;
+  gap: 0.45rem;
 }
 
 .tutorial-close {
@@ -420,6 +462,19 @@ body::after {
 
 .tutorial-close:hover {
   filter: brightness(1.04);
+}
+
+.tutorial-secondary {
+  background: linear-gradient(180deg, #fff2c1, #ffd46a);
+}
+
+.tutorial-focus {
+  position: relative;
+  z-index: 32;
+  outline: 4px solid rgba(255, 230, 130, 0.95);
+  outline-offset: 4px;
+  border-radius: 14px;
+  animation: tutorialFocusPulse 1s ease-in-out infinite;
 }
 
 @keyframes riseFade {
@@ -450,6 +505,20 @@ body::after {
   }
 }
 
+@keyframes titleFloat {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
 @keyframes sectionFlash {
   0% {
     transform: scale(0.995);
@@ -463,6 +532,16 @@ body::after {
 
   100% {
     box-shadow: var(--shadow);
+  }
+}
+
+@keyframes tutorialFocusPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 206, 86, 0.68);
+  }
+
+  100% {
+    box-shadow: 0 0 0 14px rgba(255, 206, 86, 0);
   }
 }
 
