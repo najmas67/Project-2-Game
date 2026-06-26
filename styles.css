@@ -15,7 +15,14 @@
   --primary: #f4b400;
   --primary-dark: #bf7f00;
   --text: #5f3d00;
+  --adaptive-text: #5f3d00;
+  --adaptive-panel-text: #5f3d00;
+  --adaptive-menu-text: #603800;
+  --adaptive-muted-text: #6f4a14;
   --shadow: 0 10px 20px rgba(130, 86, 0, 0.22);
+  --menu-offset-top: 1rem;
+  --menu-offset-right: 1rem;
+  --menu-panel-gap: 0.55rem;
 }
 
 * {
@@ -26,7 +33,7 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: "Fredoka", sans-serif;
-  color: var(--text);
+  color: var(--adaptive-text);
   background: linear-gradient(160deg, var(--bg-top) 0%, var(--bg-mid) 50%, var(--bg-bottom) 100%);
   overflow-x: hidden;
   position: relative;
@@ -68,13 +75,13 @@ body::after {
 }
 
 .emoji-layer::before {
-  content: "🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆\A🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆  🦆";
+  content: "🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆\A🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆 🦆";
   position: absolute;
   inset: -12%;
   white-space: pre;
   font-size: clamp(1rem, 2.3vw, 1.45rem);
-  line-height: 2.15;
-  letter-spacing: 0.3rem;
+  line-height: 1.8;
+  letter-spacing: 0.16rem;
   opacity: 0.18;
   transform: rotate(-7deg) scale(1.08);
 }
@@ -82,65 +89,90 @@ body::after {
 .app {
   width: min(980px, 92vw);
   margin: 0 auto;
-  padding: 3.8rem 0 2.5rem;
+  padding: 4.4rem 0 2.5rem;
   position: relative;
   z-index: 10;
 }
 
 .menu-toggle {
   position: fixed;
-  top: 1.2rem;
-  right: 1.2rem;
-  width: 54px;
-  height: 54px;
-  border: 2px solid #986300;
-  border-radius: 14px;
-  background: linear-gradient(180deg, #fff0a6 0%, #ffc842 100%);
-  box-shadow: 0 8px 16px rgba(106, 67, 0, 0.3);
+  top: var(--menu-offset-top);
+  right: var(--menu-offset-right);
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(104, 70, 0, 0.46);
+  border-radius: 12px;
+  background: rgba(255, 251, 236, 0.86);
+  box-shadow: 0 6px 16px rgba(72, 44, 0, 0.14);
+  backdrop-filter: blur(4px);
   display: grid;
   align-content: center;
   justify-items: center;
-  gap: 6px;
+  gap: 5px;
   cursor: pointer;
   z-index: 25;
+  transition: transform 120ms ease, background 140ms ease, box-shadow 140ms ease;
+}
+
+.menu-toggle:hover {
+  background: rgba(255, 250, 228, 0.98);
+  box-shadow: 0 8px 18px rgba(72, 44, 0, 0.2);
+}
+
+.menu-toggle:active {
+  transform: translateY(1px);
 }
 
 .menu-toggle span {
-  width: 26px;
-  height: 3px;
+  width: 22px;
+  height: 2px;
   border-radius: 999px;
-  background: #6c4200;
+  background: rgba(88, 54, 0, 0.82);
 }
 
 .menu-panel {
   position: fixed;
-  top: 4.9rem;
-  right: 1.2rem;
-  min-width: 180px;
-  border: 2px solid var(--menu-border);
-  border-radius: 14px;
-  padding: 0.5rem;
-  background: var(--menu-bg);
-  box-shadow: 0 12px 20px rgba(109, 69, 0, 0.28);
+  top: var(--menu-offset-top);
+  right: calc(var(--menu-offset-right) + 48px + var(--menu-panel-gap));
+  min-width: 0;
+  border: 1px solid rgba(115, 76, 0, 0.42);
+  border-radius: 12px;
+  padding: 0.35rem;
+  background: color-mix(in srgb, var(--menu-bg) 74%, #fff 26%);
+  box-shadow: 0 10px 18px rgba(89, 56, 0, 0.16);
+  backdrop-filter: blur(4px);
   z-index: 25;
-  display: grid;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.35rem;
 }
 
 .menu-link {
-  border: none;
+  border: 1px solid rgba(120, 78, 0, 0.25);
   border-radius: 10px;
-  padding: 0.55rem 0.65rem;
+  padding: 0.42rem 0.62rem;
   font-family: "Bubblegum Sans", "Baloo 2", cursive;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
   text-align: left;
-  color: var(--menu-item-text);
-  background: var(--menu-item-bg);
+  color: var(--adaptive-menu-text);
+  background: color-mix(in srgb, var(--menu-item-bg) 62%, #fff 38%);
   cursor: pointer;
+  animation: titleFloat 3.2s ease-in-out infinite;
+}
+
+.menu-link:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.menu-link:nth-child(3) {
+  animation-delay: 0.5s;
 }
 
 .menu-link:hover {
-  filter: brightness(1.04);
+  filter: brightness(1.03);
 }
 
 .hero {
@@ -164,6 +196,18 @@ body::after {
     0 8px 16px rgba(74, 46, 0, 0.45);
 }
 
+.duck-rain {
+  position: fixed;
+  top: -12vh;
+  z-index: 35;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(38, 23, 0, 0.35));
+  animation: duckRainFall linear forwards;
+}
+
 .tagline {
   margin: 0.4rem 0 0;
   font-size: clamp(1rem, 2.7vw, 1.3rem);
@@ -184,6 +228,7 @@ body::after {
   padding: 0.8rem;
   box-shadow: var(--shadow);
   backdrop-filter: blur(2px);
+  color: var(--adaptive-panel-text);
 }
 
 .stat-card h2 {
@@ -204,6 +249,672 @@ body::after {
   place-items: center;
   margin: 1.2rem 0 1.8rem;
   min-height: 190px;
+}
+
+body.kingdom-page-active .hero,
+body.kingdom-page-active .stats,
+body.kingdom-page-active .click-zone,
+body.kingdom-page-active #upgradesSection,
+body.kingdom-page-active #skinsSection,
+body.kingdom-page-active #ranksSection {
+  display: none;
+}
+
+body.kingdom-page-active .app {
+  width: min(1180px, 96vw);
+  padding-top: 4.6rem;
+}
+
+body.kingdom-page-active #kingdomSection {
+  display: block;
+  min-height: calc(100vh - 7.2rem);
+  border-radius: 26px;
+  padding: 1.15rem;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 240, 163, 0.5) 0%, rgba(255, 219, 101, 0.08) 40%, transparent 72%),
+    linear-gradient(180deg, rgba(255, 247, 204, 0.92) 0%, rgba(255, 230, 130, 0.82) 45%, rgba(240, 191, 78, 0.85) 100%);
+  display: grid;
+  grid-template-rows: auto auto minmax(170px, 1fr) clamp(220px, 34vh, 330px);
+  gap: 0.85rem;
+}
+
+.kingdom-entry-fx {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 6;
+  isolation: isolate;
+}
+
+.kingdom-entry-fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 42%, rgba(255, 245, 200, 0.42) 0%, rgba(255, 226, 128, 0.2) 34%, transparent 68%);
+  animation: kingdomEntryGlow 680ms ease-out forwards;
+}
+
+.kingdom-wipe-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 36%;
+  background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 188, 0.72) 28%, rgba(255, 217, 108, 0.7) 52%, rgba(255, 255, 255, 0) 100%);
+  filter: blur(1.2px);
+  transform: translateX(-120%) skewX(-8deg);
+  animation: kingdomWipeSlide 620ms cubic-bezier(0.19, 0.72, 0.22, 1) forwards;
+}
+
+.kingdom-scene {
+  position: relative;
+  margin: 0.7rem 0 1rem;
+  height: clamp(220px, 34vh, 330px);
+  border: 2px solid rgba(177, 120, 17, 0.48);
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #fff8c9 0%, #ffe78f 36%, #ffc95d 100%);
+  box-shadow: inset 0 -24px 38px rgba(185, 118, 10, 0.18), 0 8px 18px rgba(114, 73, 7, 0.22);
+  margin-top: auto;
+  z-index: 2;
+}
+
+.kingdom-scene::before,
+.kingdom-scene::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.kingdom-scene::before {
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 16%, rgba(255, 255, 255, 0.5) 0%, transparent 22%),
+    radial-gradient(circle at 82% 22%, rgba(255, 255, 255, 0.42) 0%, transparent 24%);
+  z-index: 0;
+}
+
+.kingdom-scene::after {
+  left: 6%;
+  right: 6%;
+  bottom: 24%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(132, 99, 28, 0.22);
+  filter: blur(2px);
+  z-index: 1;
+}
+
+.kingdom-sun,
+.kingdom-cloud,
+.kingdom-hill,
+.kingdom-castle,
+.kingdom-house,
+.kingdom-tower,
+.kingdom-pond,
+.kingdom-duck {
+  position: absolute;
+}
+
+.kingdom-city-layer,
+.kingdom-festival-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kingdom-city-layer {
+  z-index: 5;
+  isolation: isolate;
+}
+
+.kingdom-festival-layer {
+  z-index: 7;
+  overflow: hidden;
+}
+
+.kingdom-sun {
+  width: 94px;
+  height: 94px;
+  right: 11%;
+  top: 10%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #fff7c2 0%, #ffd95a 56%, #ffbf2f 100%);
+  box-shadow: 0 0 0 12px rgba(255, 215, 84, 0.2), 0 0 0 28px rgba(255, 219, 114, 0.12);
+}
+
+.kingdom-cloud {
+  width: 150px;
+  height: 52px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(246, 249, 255, 0.9) 100%);
+  box-shadow: 0 10px 18px rgba(163, 184, 214, 0.18);
+  filter: blur(0.15px);
+}
+
+.kingdom-cloud::before,
+.kingdom-cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: inherit;
+}
+
+.kingdom-cloud::before {
+  width: 62%;
+  height: 88%;
+  left: 8%;
+  top: -34%;
+}
+
+.kingdom-cloud::after {
+  width: 48%;
+  height: 74%;
+  right: 10%;
+  top: -24%;
+}
+
+.cloud-a {
+  left: 8%;
+  top: 16%;
+  animation: kingdomCloudDrift 8s ease-in-out infinite;
+}
+
+.cloud-b {
+  width: 128px;
+  height: 46px;
+  left: 60%;
+  top: 22%;
+  opacity: 0.92;
+  animation: kingdomCloudDrift 10s ease-in-out infinite reverse;
+}
+
+.kingdom-hill {
+  border-radius: 50% 50% 0 0;
+}
+
+.hill-back {
+  width: 92%;
+  height: 62%;
+  left: 4%;
+  bottom: -20%;
+  background: linear-gradient(180deg, #b7df6d 0%, #83bc3c 100%);
+}
+
+.hill-front {
+  width: 104%;
+  height: 66%;
+  left: -2%;
+  bottom: -24%;
+  background: linear-gradient(180deg, #96cf48 0%, #68a92d 100%);
+}
+
+.hill-front::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 28%;
+  height: 14%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(188, 235, 102, 0.82) 0%, rgba(145, 204, 68, 0.4) 100%);
+  filter: blur(0.6px);
+}
+
+.kingdom-castle {
+  width: 186px;
+  height: 122px;
+  left: 50%;
+  bottom: 16%;
+  transform: translateX(-50%);
+  border-radius: 16px 16px 12px 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 242, 206, 0.98) 0%, rgba(241, 204, 124, 0.97) 100%);
+  border: 2px solid #af8031;
+  box-shadow:
+    inset 0 -10px 16px rgba(171, 121, 35, 0.2),
+    0 12px 20px rgba(115, 72, 6, 0.22);
+  transition: transform 280ms ease, opacity 260ms ease;
+  z-index: 4;
+  overflow: visible;
+}
+
+.kingdom-castle::before,
+.kingdom-castle::after {
+  content: "";
+  position: absolute;
+  width: 36px;
+  height: 84px;
+  top: -52px;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(180deg, #fbe7b5 0%, #ddb264 100%);
+  border: 2px solid #ab7a2e;
+  box-shadow: inset 0 -8px 10px rgba(154, 105, 33, 0.2);
+}
+
+.kingdom-castle::before {
+  left: -22px;
+}
+
+.kingdom-castle::after {
+  right: -22px;
+}
+
+.kingdom-castle .kingdom-duck-king {
+  position: absolute;
+  left: 50%;
+  top: -24px;
+  transform: translateX(-50%);
+  font-size: 1.55rem;
+  line-height: 1;
+  z-index: 2;
+  filter: drop-shadow(0 1px 2px rgba(57, 35, 0, 0.35));
+}
+
+.kingdom-castle .kingdom-duck-king::before {
+  content: "👑";
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  transform: translateX(-50%);
+  font-size: 0.95rem;
+  filter: drop-shadow(0 1px 1px rgba(66, 41, 0, 0.35));
+}
+
+.kingdom-pond {
+  width: 170px;
+  height: 54px;
+  left: 14%;
+  bottom: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 32%, #d7f4ff 0%, #7cc8f0 66%, #56aad9 100%);
+  opacity: 0.85;
+}
+
+.kingdom-house {
+  width: 42px;
+  height: 32px;
+  bottom: 19%;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffe7b8 0%, #e7bb69 100%);
+  border: 2px solid #b17b2a;
+  opacity: 0;
+  transform: translateY(10px) scale(0.8);
+  transition: opacity 260ms ease, transform 280ms ease;
+}
+
+.house-a {
+  left: 31%;
+}
+
+.house-b {
+  left: 61%;
+}
+
+.house-c {
+  left: 70%;
+  bottom: 23%;
+}
+
+.kingdom-tower {
+  width: 24px;
+  height: 78px;
+  right: 27%;
+  bottom: 20%;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(180deg, #f8dfaa 0%, #d5a85a 100%);
+  border: 2px solid #ab7630;
+  opacity: 0;
+  transform: translateY(8px) scale(0.85);
+  transition: opacity 260ms ease, transform 280ms ease;
+}
+
+#kingdomSection[data-kingdom-tier="2"] .house-a,
+#kingdomSection[data-kingdom-tier="3"] .house-a,
+#kingdomSection[data-kingdom-tier="4"] .house-a,
+#kingdomSection[data-kingdom-tier="5"] .house-a {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#kingdomSection[data-kingdom-tier="3"] .house-b,
+#kingdomSection[data-kingdom-tier="4"] .house-b,
+#kingdomSection[data-kingdom-tier="5"] .house-b {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#kingdomSection[data-kingdom-tier="4"] .house-c,
+#kingdomSection[data-kingdom-tier="5"] .house-c {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#kingdomSection[data-kingdom-tier="5"] .kingdom-tower {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+#kingdomSection[data-kingdom-tier="4"] .kingdom-castle,
+#kingdomSection[data-kingdom-tier="5"] .kingdom-castle {
+  transform: translateX(-50%) scale(1.06);
+}
+
+.kingdom-duck {
+  bottom: 16%;
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 2px rgba(52, 31, 0, 0.28));
+}
+
+.duck-a {
+  left: 20%;
+  animation: kingdomDuckBob 2.2s ease-in-out infinite;
+}
+
+.duck-b {
+  left: 46%;
+  animation: kingdomDuckBob 2.7s ease-in-out infinite 0.2s;
+}
+
+.duck-c {
+  right: 15%;
+  animation: kingdomDuckBob 2.4s ease-in-out infinite 0.1s;
+}
+
+.kingdom-entity {
+  position: absolute;
+  transform: translateX(-50%);
+  transform-origin: center bottom;
+  filter: drop-shadow(0 2px 5px rgba(58, 34, 0, 0.26));
+}
+
+.kingdom-entity.duck {
+  width: auto;
+  height: auto;
+  font-size: 1.22rem;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  z-index: 6;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  animation: kingdomDuckWaddle 2.4s ease-in-out infinite;
+  transition: filter 120ms ease, transform 120ms ease;
+}
+
+.kingdom-entity.duck:hover {
+  filter: drop-shadow(0 1px 2px rgba(92, 57, 0, 0.35));
+}
+
+.kingdom-entity.duck:focus-visible {
+  outline: 2px solid rgba(255, 227, 118, 0.95);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.kingdom-entity.duck.is-talking {
+  animation-play-state: paused;
+  transform: translateX(-50%) scale(1.08);
+}
+
+.kingdom-duck-dialogue {
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 11;
+  max-width: 220px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(132, 87, 13, 0.7);
+  background: rgba(255, 249, 223, 0.96);
+  color: #5d3500;
+  font-family: "Baloo 2", cursive;
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+  pointer-events: none;
+  animation: kingdomDuckDialoguePop 1.9s ease-out forwards;
+}
+
+.kingdom-duck-dialogue::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 249, 223, 0.96);
+  border-right: 1px solid rgba(132, 87, 13, 0.7);
+  border-bottom: 1px solid rgba(132, 87, 13, 0.7);
+  rotate: 45deg;
+}
+
+.kingdom-entity.social-center {
+  width: 44px;
+  height: 30px;
+  z-index: 7;
+  z-index: 12;
+  border: 1px solid rgba(112, 69, 14, 0.7);
+  background:
+    linear-gradient(180deg, rgba(250, 233, 189, 0.98) 0%, rgba(224, 180, 101, 0.96) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 241, 205, 0.58);
+}
+
+.kingdom-entity.social-center::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -12px;
+  width: 0;
+  height: 0;
+  border-left: 24px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 14px solid rgba(166, 76, 32, 0.96);
+}
+
+.kingdom-entity.social-center::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 8px;
+  height: 12px;
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg,
+      rgba(132, 80, 24, 0.75) 0 2px,
+      rgba(240, 214, 157, 0.8) 2px 8px,
+      rgba(132, 80, 24, 0.75) 8px 10px,
+      rgba(240, 214, 157, 0.8) 10px 16px,
+      rgba(132, 80, 24, 0.75) 16px 18px,
+      rgba(240, 214, 157, 0.8) 18px 24px,
+      rgba(132, 80, 24, 0.75) 24px 26px,
+      rgba(240, 214, 157, 0.8) 26px 30px);
+}
+
+.kingdom-entity.command-center {
+  width: 32px;
+  height: 40px;
+  z-index: 8;
+  z-index: 6;
+  border: 1px solid rgba(100, 67, 22, 0.68);
+  background:
+    linear-gradient(180deg, rgba(228, 205, 151, 0.98) 0%, rgba(179, 135, 66, 0.96) 100%);
+  box-shadow: inset 0 0 0 1px rgba(242, 223, 179, 0.42);
+}
+
+.kingdom-entity.command-center::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -8px;
+  width: 14px;
+  height: 9px;
+  border-radius: 7px 7px 0 0;
+  background: rgba(132, 79, 27, 0.96);
+}
+
+.kingdom-entity.command-center::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 10px;
+  height: 12px;
+  border-radius: 2px;
+  background:
+    linear-gradient(90deg,
+      rgba(91, 59, 19, 0.78) 0 2px,
+      rgba(193, 227, 255, 0.85) 2px 8px,
+      rgba(91, 59, 19, 0.78) 8px 10px,
+      rgba(193, 227, 255, 0.85) 10px 16px,
+      rgba(91, 59, 19, 0.78) 16px 18px,
+      rgba(193, 227, 255, 0.85) 18px 22px);
+}
+
+.kingdom-entity.harbor {
+  width: 48px;
+  height: 18px;
+  z-index: 7;
+  z-index: 6;
+  border: 1px solid rgba(88, 70, 30, 0.68);
+  background:
+    linear-gradient(180deg, rgba(186, 148, 88, 0.98) 0%, rgba(132, 98, 48, 0.96) 100%);
+}
+
+.kingdom-entity.harbor::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(90deg, rgba(86, 62, 25, 0.9) 0 2px, transparent 2px 7px);
+}
+
+.kingdom-entity.harbor::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  right: 2px;
+  bottom: 13px;
+  border-radius: 3px 3px 0 0;
+  border: 1px solid rgba(103, 84, 45, 0.66);
+  background:
+    linear-gradient(180deg, rgba(232, 240, 245, 0.95) 0%, rgba(158, 187, 204, 0.94) 100%);
+}
+
+.kingdom-entity.airdock {
+  width: 46px;
+  height: 26px;
+  z-index: 8;
+  z-index: 5;
+  border: 1px solid rgba(74, 93, 118, 0.74);
+  background: linear-gradient(180deg, rgba(214, 226, 242, 0.98) 0%, rgba(139, 164, 198, 0.95) 100%);
+}
+
+.kingdom-entity.airdock::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -8px;
+  width: 30px;
+  height: 10px;
+  border-radius: 999px;
+  border: 2px solid rgba(91, 121, 155, 0.9);
+  background: rgba(237, 245, 255, 0.78);
+}
+
+.kingdom-entity.airdock::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -11px;
+  width: 20px;
+  height: 14px;
+  border-radius: 0 0 3px 3px;
+  background:
+    linear-gradient(90deg,
+      rgba(76, 108, 151, 0.72) 0 4px,
+      transparent 4px 14px,
+      rgba(76, 108, 151, 0.72) 14px 18px);
+}
+
+.kingdom-airship {
+  position: absolute;
+  font-size: 1.45rem;
+  z-index: 9;
+  z-index: 6;
+  animation: kingdomAirshipCruise 11s linear infinite;
+}
+
+#kingdomSection.festival-live .kingdom-scene {
+  box-shadow: inset 0 -24px 38px rgba(185, 118, 10, 0.18), 0 0 0 3px rgba(255, 226, 115, 0.6), 0 12px 26px rgba(114, 73, 7, 0.28);
+}
+
+.kingdom-confetti {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  animation: kingdomConfettiFall linear forwards;
+}
+
+.kingdom-firework-burst {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.kingdom-firework-spark {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: hsl(var(--spark-hue), 95%, 62%);
+  box-shadow: 0 0 8px hsla(var(--spark-hue), 95%, 62%, 0.75);
+  animation: kingdomFireworkSpark 700ms ease-out forwards;
+}
+
+.kingdom-festival-banner {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  transform: translateX(-50%);
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-family: "Bubblegum Sans", "Baloo 2", cursive;
+  font-size: 1.1rem;
+  color: #6b3900;
+  background: linear-gradient(180deg, #fff2ae 0%, #ffd65f 100%);
+  border: 1px solid rgba(173, 111, 6, 0.55);
+  box-shadow: 0 4px 10px rgba(99, 62, 0, 0.22);
+  animation: kingdomBannerPulse 0.8s ease-in-out 4;
+}
+
+.kingdom-stats-card {
+  position: relative;
+  z-index: 4;
+}
+
+#kingdomList {
+  align-content: start;
+  overflow: auto;
+  padding-right: 0.2rem;
+  z-index: 3;
 }
 
 .duck-button {
@@ -262,9 +973,10 @@ body::after {
   left: 50%;
   top: -10px;
   transform: translateX(-50%);
-  color: #7a4600;
+  color: var(--adaptive-panel-text);
   font-weight: 700;
   font-size: 1.05rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.22);
   animation: riseFade 640ms ease-out forwards;
 }
 
@@ -277,6 +989,34 @@ body::after {
   scroll-margin-top: 6.2rem;
   position: relative;
   isolation: isolate;
+  color: var(--adaptive-panel-text);
+}
+
+.upgrades::before,
+.upgrades::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  border-radius: 24px;
+  z-index: -1;
+}
+
+.upgrades::before {
+  inset: -10px;
+  border: 3px solid rgba(185, 116, 0, 0.7);
+  background:
+    radial-gradient(circle at 0 50%, transparent 7px, rgba(255, 236, 164, 0.82) 8px, rgba(255, 236, 164, 0.82) 10px, transparent 11px) 0 0 / 20px 20px,
+    radial-gradient(circle at 100% 50%, transparent 7px, rgba(255, 236, 164, 0.82) 8px, rgba(255, 236, 164, 0.82) 10px, transparent 11px) 0 10px / 20px 20px;
+  opacity: 0.92;
+}
+
+.upgrades::after {
+  inset: -4px;
+  border: 2px solid rgba(255, 223, 120, 0.86);
+  background:
+    radial-gradient(circle at 0 50%, transparent 5px, rgba(255, 248, 211, 0.78) 6px, rgba(255, 248, 211, 0.78) 8px, transparent 9px) 0 0 / 16px 16px,
+    radial-gradient(circle at 100% 50%, transparent 5px, rgba(255, 248, 211, 0.78) 6px, rgba(255, 248, 211, 0.78) 8px, transparent 9px) 0 8px / 16px 16px;
+  opacity: 0.95;
 }
 
 #skinsSection {
@@ -372,45 +1112,29 @@ body::after {
   animation: sectionFlash 560ms ease-out;
 }
 
-.section-flash::before,
-.section-flash::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  border-radius: 24px;
-  z-index: 2;
-}
-
-.section-flash::before {
-  inset: -10px;
-  border: 3px solid rgba(185, 116, 0, 0.85);
-  background:
-    radial-gradient(circle at 0 50%, transparent 7px, rgba(255, 236, 164, 0.95) 8px, rgba(255, 236, 164, 0.95) 10px, transparent 11px) 0 0 / 20px 20px,
-    radial-gradient(circle at 100% 50%, transparent 7px, rgba(255, 236, 164, 0.95) 8px, rgba(255, 236, 164, 0.95) 10px, transparent 11px) 0 10px / 20px 20px;
-  opacity: 0;
-  animation: laceFrameOuter 560ms ease-out;
-}
-
-.section-flash::after {
-  inset: -4px;
-  border: 2px solid rgba(255, 223, 120, 0.95);
-  background:
-    radial-gradient(circle at 0 50%, transparent 5px, rgba(255, 248, 211, 0.9) 6px, rgba(255, 248, 211, 0.9) 8px, transparent 9px) 0 0 / 16px 16px,
-    radial-gradient(circle at 100% 50%, transparent 5px, rgba(255, 248, 211, 0.9) 6px, rgba(255, 248, 211, 0.9) 8px, transparent 9px) 0 8px / 16px 16px;
-  opacity: 0;
-  animation: laceFrameInner 560ms ease-out;
-}
-
 .upgrades-head h2 {
   margin: 0;
   font-family: "Bubblegum Sans", "Baloo 2", cursive;
   font-size: clamp(1.7rem, 4vw, 2.2rem);
+  color: var(--adaptive-panel-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.24);
+  animation: titleFloat 3.2s ease-in-out infinite;
+}
+
+#skinsSection .upgrades-head h2 {
+  animation-delay: 0.28s;
+}
+
+#ranksSection .upgrades-head h2 {
+  animation-delay: 0.56s;
 }
 
 .upgrades-head p {
   margin: 0.2rem 0 0.8rem;
   font-size: 1rem;
   font-weight: 500;
+  color: var(--adaptive-muted-text);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
 }
 
 .upgrade-list {
@@ -421,12 +1145,40 @@ body::after {
 .upgrade-card {
   border: 2px solid #e0ba51;
   background: #fff2c4;
+  color: #4f3000;
   border-radius: 16px;
   padding: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
+}
+
+.skin-card {
+  background: color-mix(in srgb, var(--panel) 90%, #fff 10%);
+  border-color: color-mix(in srgb, var(--panel-border) 88%, #ffd670 12%);
+  color: var(--adaptive-panel-text);
+}
+
+.skin-card .upgrade-info p {
+  color: var(--adaptive-muted-text);
+}
+
+.skin-card .upgrade-info h3,
+.skin-card .skin-name {
+  color: var(--adaptive-panel-text);
+}
+
+.skin-card .skin-desc {
+  color: var(--adaptive-muted-text);
+}
+
+.skin-card .upgrade-cost {
+  color: var(--adaptive-panel-text);
+}
+
+.skin-buy {
+  color: var(--adaptive-menu-text);
 }
 
 .upgrade-info h3 {
@@ -482,16 +1234,50 @@ body::after {
   z-index: 20;
   border: none;
   border-radius: 999px;
-  padding: 0.55rem 1rem;
+  padding: 0.82rem 1.45rem;
+  font-family: "Bubblegum Sans", "Baloo 2", cursive;
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
   font-weight: 700;
-  color: #5d3600;
+  color: var(--adaptive-menu-text);
   background: linear-gradient(180deg, #ffe57f, #ffc933);
-  box-shadow: 0 6px 14px rgba(96, 58, 0, 0.32);
+  box-shadow: 0 10px 18px rgba(96, 58, 0, 0.34);
   cursor: pointer;
+  animation: titleFloat 3.2s ease-in-out infinite;
 }
 
 .tutorial-button:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.06);
+}
+
+.tutorial-hint {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 4.35rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--adaptive-panel-text);
+  font-family: "Bubblegum Sans", "Baloo 2", cursive;
+  font-size: 1.08rem;
+  font-weight: 700;
+  pointer-events: none;
+  animation: titleFloat 3.2s ease-in-out infinite;
+}
+
+.tutorial-hint-text {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--panel) 88%, #fff 12%);
+  border: 1px solid color-mix(in srgb, var(--panel-border) 82%, #ffd366 18%);
+  box-shadow: 0 5px 12px rgba(58, 35, 0, 0.16);
+}
+
+.tutorial-hint-arrow {
+  font-size: 1.22rem;
+  color: var(--adaptive-menu-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tutorial-overlay {
@@ -510,20 +1296,23 @@ body::after {
 .tutorial-card {
   width: min(520px, 92vw);
   position: fixed;
-  background: #fff5d6;
-  border: 2px solid #e2bd56;
+  background: color-mix(in srgb, var(--panel) 92%, #fff 8%);
+  border: 2px solid color-mix(in srgb, var(--panel-border) 84%, #ffd566 16%);
   border-radius: 18px;
   box-shadow: 0 14px 28px rgba(66, 39, 0, 0.38);
   padding: 1rem;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  color: var(--adaptive-panel-text);
 }
 
 .tutorial-card h2 {
   margin: 0;
   font-family: "Baloo 2", cursive;
   font-size: 1.9rem;
+  color: var(--adaptive-panel-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .tutorial-mascot-row {
@@ -546,8 +1335,8 @@ body::after {
 }
 
 .tutorial-speech {
-  background: #fff0bf;
-  border: 2px solid #d8ae3f;
+  background: color-mix(in srgb, var(--panel) 85%, #fff 15%);
+  border: 2px solid color-mix(in srgb, var(--panel-border) 86%, #ffd873 14%);
   border-radius: 14px;
   padding: 0.6rem 0.7rem;
 }
@@ -556,7 +1345,7 @@ body::after {
   margin: 0;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #7a4b00;
+  color: var(--adaptive-menu-text);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -565,6 +1354,7 @@ body::after {
   margin: 0.3rem 0 0;
   font-size: 1rem;
   font-weight: 500;
+  color: var(--adaptive-panel-text);
 }
 
 .tutorial-actions {
@@ -579,7 +1369,7 @@ body::after {
   border-radius: 999px;
   padding: 0.5rem 1rem;
   font-weight: 700;
-  color: #5f3900;
+  color: var(--adaptive-menu-text);
   background: linear-gradient(180deg, #ffd863, #f7b900);
   cursor: pointer;
 }
@@ -635,7 +1425,7 @@ body::after {
   }
 
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-3px);
   }
 
   100% {
@@ -656,38 +1446,6 @@ body::after {
 
   100% {
     box-shadow: var(--shadow);
-  }
-}
-
-@keyframes laceFrameOuter {
-  0% {
-    opacity: 0;
-    transform: scale(0.985);
-  }
-
-  45% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.01);
-  }
-}
-
-@keyframes laceFrameInner {
-  0% {
-    opacity: 0;
-    transform: scale(0.99);
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: scale(1.005);
   }
 }
 
@@ -713,6 +1471,174 @@ body::after {
   }
 }
 
+@keyframes duckRainFall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  8% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(0, 118vh, 0) rotate(300deg);
+    opacity: 0.98;
+  }
+}
+
+@keyframes kingdomWipeSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(-120%) skewX(-8deg);
+  }
+
+  24% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(300%) skewX(-8deg);
+  }
+}
+
+@keyframes kingdomEntryGlow {
+  0% {
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes kingdomCloudDrift {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(8px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes kingdomDuckBob {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes kingdomDuckWaddle {
+  0% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateX(-50%) translateY(-1px) rotate(-3deg);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(0) rotate(1deg);
+  }
+
+  75% {
+    transform: translateX(-50%) translateY(-1px) rotate(3deg);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes kingdomDuckDialoguePop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px) scale(0.9);
+  }
+
+  12% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  82% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px) scale(0.96);
+  }
+}
+
+@keyframes kingdomAirshipCruise {
+  0% {
+    transform: translateX(-18vw) translateY(0);
+  }
+
+  50% {
+    transform: translateX(42vw) translateY(-2px);
+  }
+
+  100% {
+    transform: translateX(110vw) translateY(0);
+  }
+}
+
+@keyframes kingdomConfettiFall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(310px) rotate(480deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes kingdomFireworkSpark {
+  0% {
+    transform: translate(0, 0) scale(0.3);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(var(--spark-x), var(--spark-y)) scale(0.05);
+    opacity: 0;
+  }
+}
+
+@keyframes kingdomBannerPulse {
+  0% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+}
+
 @media (max-width: 780px) {
   .stats {
     grid-template-columns: 1fr;
@@ -732,6 +1658,19 @@ body::after {
   .tutorial-button {
     right: 0.75rem;
     bottom: 0.75rem;
+    padding: 0.74rem 1.18rem;
+    font-size: 1.05rem;
+  }
+
+  .tutorial-hint {
+    right: 0.78rem;
+    bottom: 3.95rem;
+    font-size: 0.95rem;
+    gap: 0.22rem;
+  }
+
+  .tutorial-hint-arrow {
+    font-size: 1rem;
   }
 
   body::before {
@@ -743,12 +1682,13 @@ body::after {
   }
 
   .menu-toggle {
-    top: 0.9rem;
-    right: 0.9rem;
+    top: 0.75rem;
+    right: 0.75rem;
   }
 
   .menu-panel {
-    top: 4.5rem;
-    right: 0.9rem;
+    top: calc(0.75rem + 48px + 0.45rem);
+    right: 0.75rem;
+    max-width: min(92vw, 460px);
   }
 }

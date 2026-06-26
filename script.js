@@ -20,86 +20,139 @@ const menuPanel = document.getElementById("menuPanel");
 const upgradesSection = document.getElementById("upgradesSection");
 const skinsSection = document.getElementById("skinsSection");
 const ranksSection = document.getElementById("ranksSection");
+const kingdomSection = document.getElementById("kingdomSection");
 const currentRankEl = document.getElementById("currentRank");
 const nextRankNeedEl = document.getElementById("nextRankNeed");
 const rankList = document.getElementById("rankList");
 const rankNotificationLayer = document.getElementById("rankNotificationLayer");
+const gameTitleEl = document.getElementById("gameTitle");
+const heroSection = document.querySelector(".hero");
+const statsSection = document.querySelector(".stats");
+const clickZoneSection = document.querySelector(".click-zone");
+const kingdomLevelEl = document.getElementById("kingdomLevel");
+const kingdomPopulationEl = document.getElementById("kingdomPopulation");
+const kingdomIncomeEl = document.getElementById("kingdomIncome");
+const kingdomList = document.getElementById("kingdomList");
+const kingdomFestivalButton = document.getElementById("kingdomFestivalButton");
+const kingdomFestivalMeta = document.getElementById("kingdomFestivalMeta");
+const kingdomEntryFx = document.getElementById("kingdomEntryFx");
+const kingdomCityLayer = document.getElementById("kingdomCityLayer");
+const kingdomFestivalLayer = document.getElementById("kingdomFestivalLayer");
 
 const storageKey = "silly-ducks-save-v1";
 const MAX_TIER_VALUE = 1_000_000_000;
+const UPGRADE_START_COST = 50;
+const UPGRADE_MAX_COST = 100_000;
+const UPGRADE_COST_GROWTH = 1.6;
+const SECRET_RANK = {
+  name: "Duck of the Hidden Dawn",
+  ducks: 0,
+};
+const KINGDOM_FESTIVAL_COOLDOWN_MS = 30_000;
+const KINGDOM_DUCK_LINES = [
+  "Quack! Keep building this kingdom!",
+  "I guard the grass lane every morning.",
+  "The pond snacks are excellent today.",
+  "More huts means more duck neighbors!",
+  "Festival night is my favorite shift.",
+  "Command center says we are thriving.",
+  "Harbor deliveries arrived right on time.",
+  "Quack quack. I believe in this empire.",
+];
 
 const upgrades = [
   {
     id: "beak-blitz",
     name: "Beak Blitz",
     description: "",
-    baseCost: 25,
+    baseCost: UPGRADE_START_COST,
     type: "click",
     basePower: 1,
-    level: 0,
-  },
-  {
-    id: "wing-whirl",
-    name: "Wing Whirl",
-    description: "",
-    baseCost: 70,
-    type: "click",
-    basePower: 2,
-    level: 0,
-  },
-  {
-    id: "splash-surge",
-    name: "Splash Surge",
-    description: "",
-    baseCost: 220,
-    type: "click",
-    basePower: 3,
-    level: 0,
-  },
-  {
-    id: "feather-frenzy",
-    name: "Feather Frenzy",
-    description: "",
-    baseCost: 420,
-    type: "click",
-    basePower: 5,
     level: 0,
   },
   {
     id: "pond-pulse",
     name: "Pond Pulse",
     description: "",
-    baseCost: 120,
+    baseCost: UPGRADE_START_COST,
     type: "auto",
     basePower: 1,
     level: 0,
   },
   {
-    id: "marsh-matrix",
-    name: "Marsh Matrix",
+    id: "lucky-feather",
+    name: "Lucky Feather",
     description: "",
-    baseCost: 360,
-    type: "auto",
-    basePower: 2,
+    baseCost: 120,
+    type: "crit-chance",
+    basePower: 0.04,
     level: 0,
   },
   {
-    id: "quack-assembler",
-    name: "Quack Assembler",
+    id: "treasure-talon",
+    name: "Treasure Talon",
     description: "",
-    baseCost: 760,
-    type: "auto",
-    basePower: 4,
+    baseCost: 180,
+    type: "click-multiplier",
+    basePower: 0.35,
     level: 0,
   },
   {
-    id: "flock-reactor",
-    name: "Flock Reactor",
+    id: "windmill-docks",
+    name: "Windmill Docks",
     description: "",
-    baseCost: 1450,
-    type: "auto",
-    basePower: 7,
+    baseCost: 220,
+    type: "auto-multiplier",
+    basePower: 0.3,
     level: 0,
+  },
+  {
+    id: "crown-engine",
+    name: "Crown Engine",
+    description: "",
+    baseCost: 400,
+    type: "kingdom-multiplier",
+    basePower: 0.25,
+    level: 0,
+  },
+];
+
+const kingdomBuildings = [
+  {
+    id: "nest-huts",
+    name: "Nest Huts",
+    description: "Tiny homes for your duck citizens.",
+    baseCost: 160,
+    populationGain: 6,
+    incomePerSecond: 2,
+    count: 0,
+  },
+  {
+    id: "pond-plaza",
+    name: "Pond Plaza",
+    description: "A social center where ducks trade snacks and stories.",
+    baseCost: 520,
+    populationGain: 15,
+    incomePerSecond: 8,
+    count: 0,
+  },
+  {
+    id: "quack-castle",
+    name: "Quack Castle",
+    description: "The royal command center for your growing kingdom.",
+    baseCost: 1_650,
+    populationGain: 40,
+    incomePerSecond: 28,
+    count: 0,
+  },
+  {
+    id: "sky-harbor",
+    name: "Sky Harbor",
+    description: "Airship docks that attract elite duck merchants.",
+    baseCost: 4_800,
+    populationGain: 90,
+    incomePerSecond: 85,
+    count: 0,
   },
 ];
 
@@ -225,49 +278,218 @@ const state = {
   selectedSkin: "golden-fluff",
   hasPlayed: false,
   tutorialCompleted: false,
+  secretRankUnlocked: false,
+  clickMultiplier: 1,
+  autoMultiplier: 1,
+  critChance: 0,
+  critMultiplier: 2,
+  kingdomMultiplier: 1,
+  kingdomPopulation: 0,
+  kingdomLevel: 1,
+  kingdomFestivalReadyAt: 0,
 };
 
 const tutorialSteps = [
   {
-    text: "Hi, I am Captain Quackers. I will teach you the game in under a minute.",
+    text: "Welcome to Silly Ducks. I am Captain Quackers, and this quick guide will show you how to play efficiently.",
     focusId: "duckButton",
   },
   {
-    text: "Tap this big duck button to collect ducks. Every click grows your total.",
+    text: "Tap the big duck button to collect ducks. Every tap increases your total right away.",
     focusId: "duckButton",
   },
   {
-    text: "Use the top-right menu to open hidden sections whenever you need them.",
+    text: "Use this top-right menu to open your sections. It is your main navigation during the game.",
     focusId: "menuToggle",
+    openMenu: true,
   },
   {
-    text: "Open Upgrades ! to boost ducks per click and auto ducks over time.",
+    text: "In Upgrades, buy power boosts for clicks, auto income, and special abilities.",
     focusId: "upgradesSection",
     sectionId: "upgradesSection",
   },
   {
-    text: "Open Skins ! to unlock new looks using ducks you collect from clicking.",
+    text: "In Skins, unlock new looks. Skins are cosmetic and keep your progress intact.",
     focusId: "skinsSection",
     sectionId: "skinsSection",
+  },
+  {
+    text: "In Ranks, track milestones and see what you need for your next title.",
+    focusId: "ranksSection",
+    sectionId: "ranksSection",
+  },
+  {
+    text: "In Duck Kingdom, build structures, grow population, and host festivals for bonus ducks.",
+    focusId: "kingdomSection",
+    sectionId: "kingdomSection",
+  },
+  {
+    text: "You are ready. Keep tapping, invest in upgrades, and rotate sections often for faster growth.",
+    focusId: "duckButton",
   },
 ];
 
 let tutorialStepIndex = 0;
 let activeTutorialFocus = null;
 let lastAnnouncedRankIndex = -1;
+let secretRankAnnounced = false;
+let lastVisibleSectionId = "";
+let lastKingdomVisualKey = "";
 
 function formatNumber(value) {
   return Math.floor(value).toLocaleString();
 }
 
+function parseColorToRgb(colorValue) {
+  if (typeof colorValue !== "string") {
+    return null;
+  }
+
+  const color = colorValue.trim();
+  if (color.startsWith("#")) {
+    const hex = color.slice(1);
+    if (hex.length === 3 || hex.length === 4) {
+      const r = Number.parseInt(hex[0] + hex[0], 16);
+      const g = Number.parseInt(hex[1] + hex[1], 16);
+      const b = Number.parseInt(hex[2] + hex[2], 16);
+      return { r, g, b };
+    }
+
+    if (hex.length === 6 || hex.length === 8) {
+      const r = Number.parseInt(hex.slice(0, 2), 16);
+      const g = Number.parseInt(hex.slice(2, 4), 16);
+      const b = Number.parseInt(hex.slice(4, 6), 16);
+      return { r, g, b };
+    }
+
+    return null;
+  }
+
+  const rgbMatch = color.match(/^rgba?\(([^)]+)\)$/i);
+  if (!rgbMatch) {
+    return null;
+  }
+
+  const channels = rgbMatch[1]
+    .split(",")
+    .map((part) => Number.parseFloat(part.trim()))
+    .filter((value) => Number.isFinite(value));
+
+  if (channels.length < 3) {
+    return null;
+  }
+
+  return {
+    r: Math.max(0, Math.min(255, channels[0])),
+    g: Math.max(0, Math.min(255, channels[1])),
+    b: Math.max(0, Math.min(255, channels[2])),
+  };
+}
+
+function getRelativeLuminance({ r, g, b }) {
+  const normalizeChannel = (channel) => {
+    const value = channel / 255;
+    return value <= 0.03928 ? value / 12.92 : Math.pow((value + 0.055) / 1.055, 2.4);
+  };
+
+  const red = normalizeChannel(r);
+  const green = normalizeChannel(g);
+  const blue = normalizeChannel(b);
+
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+}
+
+function getReadableTextColor(backgroundColor, darkText, lightText) {
+  const rgb = parseColorToRgb(backgroundColor);
+  if (!rgb) {
+    return darkText;
+  }
+
+  const luminance = getRelativeLuminance(rgb);
+  return luminance > 0.52 ? darkText : lightText;
+}
+
 function getUpgradeCost(upgrade) {
-  return Math.floor(upgrade.baseCost * Math.pow(3.2, upgrade.level));
+  const scaledCost = upgrade.baseCost * Math.pow(UPGRADE_COST_GROWTH, upgrade.level);
+  return Math.min(UPGRADE_MAX_COST, Math.floor(scaledCost));
+}
+
+function getKingdomBuildingCost(building) {
+  return Math.floor(building.baseCost * Math.pow(1.55, building.count));
+}
+
+function getKingdomIncomePerSecond() {
+  const baseIncome = kingdomBuildings.reduce(
+    (sum, building) => sum + building.incomePerSecond * building.count,
+    0,
+  );
+  return Math.floor(baseIncome * state.kingdomMultiplier);
+}
+
+function getEffectiveClickGain() {
+  const baseClick = Math.max(1, state.ducksPerClick);
+  let gain = Math.floor(baseClick * state.clickMultiplier);
+  const critTriggered = Math.random() < state.critChance;
+  if (critTriggered) {
+    gain = Math.floor(gain * state.critMultiplier);
+  }
+
+  return {
+    gain: Math.max(1, gain),
+    critTriggered,
+  };
+}
+
+function getEffectiveAutoPerSecond() {
+  const baseAuto = Math.max(0, state.autoPerSecond);
+  const boostedAuto = Math.floor(baseAuto * state.autoMultiplier);
+  return boostedAuto + getKingdomIncomePerSecond();
+}
+
+function pickRandomItem(items) {
+  if (!Array.isArray(items) || items.length === 0) {
+    return "";
+  }
+
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function getKingdomDuckLine() {
+  const contextualLines = [];
+
+  if (state.kingdomPopulation >= 100) {
+    contextualLines.push(`Population watch: ${formatNumber(state.kingdomPopulation)} ducks and growing!`);
+  }
+
+  const kingdomIncome = getKingdomIncomePerSecond();
+  if (kingdomIncome > 0) {
+    contextualLines.push(`Treasury report: ${formatNumber(kingdomIncome)} ducks per second.`);
+  }
+
+  return pickRandomItem([...KINGDOM_DUCK_LINES, ...contextualLines]);
+}
+
+function showKingdomDuckDialogue(duckNode, message) {
+  if (!kingdomCityLayer || !duckNode || !message) {
+    return;
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "kingdom-duck-dialogue";
+  bubble.textContent = message;
+  bubble.style.left = duckNode.style.left;
+  bubble.style.bottom = `${Number.parseFloat(duckNode.style.bottom || "0") + 10}%`;
+  kingdomCityLayer.appendChild(bubble);
+
+  window.setTimeout(() => {
+    bubble.remove();
+  }, 1900);
 }
 
 function updateStats() {
   duckCountEl.textContent = formatNumber(state.ducks);
-  ducksPerClickEl.textContent = formatNumber(state.ducksPerClick);
-  autoPerSecondEl.textContent = formatNumber(state.autoPerSecond);
+  ducksPerClickEl.textContent = formatNumber(Math.floor(state.ducksPerClick * state.clickMultiplier));
+  autoPerSecondEl.textContent = formatNumber(getEffectiveAutoPerSecond());
 }
 
 function getCurrentRankIndex() {
@@ -337,9 +559,74 @@ function showRankNotification(rankTier) {
   }, 2300);
 }
 
+function showSecretRankNotification() {
+  if (!rankNotificationLayer) {
+    return;
+  }
+
+  const popup = document.createElement("article");
+  popup.className = "rank-popup";
+  popup.innerHTML = `
+    <h3>Secret Found!</h3>
+    <p>You unlocked <strong>${SECRET_RANK.name}</strong> by discovering a hidden easter egg.</p>
+  `;
+
+  rankNotificationLayer.appendChild(popup);
+  window.requestAnimationFrame(() => popup.classList.add("show"));
+
+  spawnFireworksBurst();
+  window.setTimeout(spawnFireworksBurst, 140);
+  window.setTimeout(spawnFireworksBurst, 280);
+
+  window.setTimeout(() => {
+    popup.classList.remove("show");
+    window.setTimeout(() => popup.remove(), 320);
+  }, 2500);
+}
+
+function startDuckShower() {
+  const showerCount = 50;
+  const duckRainImageSrc = "images/duck-rain-transparent.png";
+
+  for (let index = 0; index < showerCount; index += 1) {
+    const duck = document.createElement("img");
+    duck.className = "duck-rain";
+    duck.src = duckRainImageSrc;
+    duck.alt = "";
+    duck.setAttribute("aria-hidden", "true");
+    duck.style.left = `${Math.random() * 100}vw`;
+    const duckSize = Math.floor(42 + Math.random() * 42);
+    duck.style.width = `${duckSize}px`;
+    duck.style.height = "auto";
+    duck.style.transform = `rotate(${Math.floor(-18 + Math.random() * 36)}deg)`;
+    duck.style.animationDuration = `${(1.8 + Math.random() * 2.2).toFixed(2)}s`;
+    duck.style.animationDelay = `${(Math.random() * 0.75).toFixed(2)}s`;
+    document.body.appendChild(duck);
+    window.setTimeout(() => duck.remove(), 5000);
+  }
+}
+
+function triggerSecretEasterEgg() {
+  startDuckShower();
+
+  if (state.secretRankUnlocked) {
+    return;
+  }
+
+  state.secretRankUnlocked = true;
+  secretRankAnnounced = true;
+  showSecretRankNotification();
+  renderRanks();
+  saveGame();
+}
+
 function maybeNotifyRankUp() {
   const currentRankIndex = getCurrentRankIndex();
   if (currentRankIndex <= lastAnnouncedRankIndex) {
+    if (state.secretRankUnlocked && !secretRankAnnounced) {
+      showSecretRankNotification();
+      secretRankAnnounced = true;
+    }
     return;
   }
 
@@ -355,6 +642,11 @@ function maybeNotifyRankUp() {
   }
 
   lastAnnouncedRankIndex = currentRankIndex;
+
+  if (state.secretRankUnlocked && !secretRankAnnounced) {
+    showSecretRankNotification();
+    secretRankAnnounced = true;
+  }
 }
 
 function renderRanks() {
@@ -365,9 +657,12 @@ function renderRanks() {
   const currentTierIndex = getCurrentRankIndex();
   const currentTier = currentTierIndex >= 0 ? rankTiers[currentTierIndex] : null;
   const nextTier = currentTierIndex >= 0 ? rankTiers[currentTierIndex + 1] || null : rankTiers[0];
+  const usingSecretRank = state.secretRankUnlocked;
 
-  currentRankEl.textContent = currentTier ? currentTier.name : "Unranked";
-  if (!nextTier) {
+  currentRankEl.textContent = usingSecretRank ? SECRET_RANK.name : currentTier ? currentTier.name : "Unranked";
+  if (usingSecretRank) {
+    nextRankNeedEl.textContent = "You discovered the hidden rank. Your flock now knows forbidden quack lore.";
+  } else if (!nextTier) {
     nextRankNeedEl.textContent = "Max rank reached. Your flock is unstoppable.";
   } else {
     const ducksNeeded = Math.max(0, nextTier.ducks - state.totalDucksEarned);
@@ -397,6 +692,22 @@ function renderRanks() {
 
     rankList.appendChild(card);
   });
+
+  const secretCard = document.createElement("article");
+  secretCard.className = "upgrade-card rank-tier-card";
+  if (state.secretRankUnlocked) {
+    secretCard.classList.add("rank-achieved", "rank-current");
+  }
+
+  secretCard.innerHTML = `
+    <div class="upgrade-info">
+      <h3>${SECRET_RANK.name}</h3>
+      <p>Requirement: Discover the hidden title easter egg.</p>
+    </div>
+    <div class="upgrade-actions rank-status">${state.secretRankUnlocked ? "Unlocked" : "Hidden"}</div>
+  `;
+
+  rankList.appendChild(secretCard);
 }
 
 function showFloatingGain(value) {
@@ -658,9 +969,41 @@ function applySkin() {
   const theme = skinThemes[state.selectedSkin] || skinThemes["golden-fluff"];
   const appTheme = appThemes[state.selectedSkin] || appThemes["golden-fluff"];
 
+  const adaptiveThemeOverrides = {
+    "lava-quack": {
+      text: "#fff2e6",
+      panelText: "#ffe9d4",
+      menuText: "#ffe7cc",
+      mutedText: "#ffd1ad",
+    },
+    "midnight-feather": {
+      text: "#f4f7ff",
+      panelText: "#edf2ff",
+      menuText: "#e8efff",
+      mutedText: "#cbd6ff",
+    },
+    "royal-plume": {
+      text: "#f9f0d8",
+      panelText: "#f7ead0",
+      menuText: "#f7e7c7",
+      mutedText: "#dfc99f",
+    },
+  };
+
   Object.entries(appTheme).forEach(([variable, value]) => {
     root.style.setProperty(variable, value);
   });
+
+  const adaptiveText = getReadableTextColor(appTheme["--bg-bottom"], "#402600", "#fff4df");
+  const adaptivePanelText = getReadableTextColor(appTheme["--panel"], "#4f3000", "#fff2e0");
+  const adaptiveMenuText = getReadableTextColor(appTheme["--menu-bg"], "#4d2f00", "#fff1dc");
+  const adaptiveMutedText = adaptivePanelText === "#fff2e0" ? "#f4dfc3" : "#6f4a14";
+  const skinAdaptiveOverride = adaptiveThemeOverrides[state.selectedSkin] || null;
+
+  root.style.setProperty("--adaptive-text", skinAdaptiveOverride?.text || adaptiveText);
+  root.style.setProperty("--adaptive-panel-text", skinAdaptiveOverride?.panelText || adaptivePanelText);
+  root.style.setProperty("--adaptive-menu-text", skinAdaptiveOverride?.menuText || adaptiveMenuText);
+  root.style.setProperty("--adaptive-muted-text", skinAdaptiveOverride?.mutedText || adaptiveMutedText);
 
   duckButton.style.setProperty("--clicker-bg", theme.bg);
   duckButton.style.setProperty("--clicker-shadow-edge", theme.edge);
@@ -672,6 +1015,7 @@ function saveGame() {
     state,
     upgrades: upgrades.map((upgrade) => ({ id: upgrade.id, level: upgrade.level })),
     skins: skins.map((skin) => ({ id: skin.id, unlocked: skin.unlocked })),
+    kingdomBuildings: kingdomBuildings.map((building) => ({ id: building.id, count: building.count })),
   };
 
   localStorage.setItem(storageKey, JSON.stringify(snapshot));
@@ -694,6 +1038,15 @@ function loadGame() {
       state.selectedSkin = parsed.state.selectedSkin || "golden-fluff";
       state.hasPlayed = Boolean(parsed.state.hasPlayed);
       state.tutorialCompleted = Boolean(parsed.state.tutorialCompleted);
+      state.secretRankUnlocked = Boolean(parsed.state.secretRankUnlocked);
+      state.clickMultiplier = Number(parsed.state.clickMultiplier) || 1;
+      state.autoMultiplier = Number(parsed.state.autoMultiplier) || 1;
+      state.critChance = Math.max(0, Number(parsed.state.critChance) || 0);
+      state.critMultiplier = Math.max(2, Number(parsed.state.critMultiplier) || 2);
+      state.kingdomMultiplier = Math.max(1, Number(parsed.state.kingdomMultiplier) || 1);
+      state.kingdomPopulation = Math.max(0, Number(parsed.state.kingdomPopulation) || 0);
+      state.kingdomLevel = Math.max(1, Number(parsed.state.kingdomLevel) || 1);
+      state.kingdomFestivalReadyAt = Math.max(0, Number(parsed.state.kingdomFestivalReadyAt) || 0);
     }
 
     if (Array.isArray(parsed.upgrades)) {
@@ -710,6 +1063,15 @@ function loadGame() {
         const target = skins.find((item) => item.id === savedSkin.id);
         if (target) {
           target.unlocked = Boolean(savedSkin.unlocked);
+        }
+      });
+    }
+
+    if (Array.isArray(parsed.kingdomBuildings)) {
+      parsed.kingdomBuildings.forEach((savedBuilding) => {
+        const target = kingdomBuildings.find((item) => item.id === savedBuilding.id);
+        if (target) {
+          target.count = Math.max(0, Number(savedBuilding.count) || 0);
         }
       });
     }
@@ -736,19 +1098,45 @@ function renderUpgrades() {
     const buyButton = card.querySelector(".upgrade-buy");
 
     const currentCost = getUpgradeCost(upgrade);
-    const currentTypeValue = upgrade.type === "click" ? state.ducksPerClick : state.autoPerSecond;
-    const nextTypeValue = currentTypeValue === 0 ? 1 : Math.min(MAX_TIER_VALUE, currentTypeValue * 10);
-    const atCap = currentTypeValue >= MAX_TIER_VALUE;
+    let atCap = false;
 
     nameEl.textContent = upgrade.name;
     if (upgrade.type === "click") {
+      const nextTypeValue = Math.min(MAX_TIER_VALUE, state.ducksPerClick * 10);
+      atCap = state.ducksPerClick >= MAX_TIER_VALUE;
       descEl.textContent = atCap
-        ? "Max reached: 1,000,000,000 ducks/click"
-        : `Next tier: ${formatNumber(currentTypeValue)} -> ${formatNumber(nextTypeValue)} ducks/click (10x)`;
+        ? "Max reached: 1,000,000,000 base ducks/click"
+        : `Next tier: ${formatNumber(state.ducksPerClick)} -> ${formatNumber(nextTypeValue)} base ducks/click (10x)`;
+    } else if (upgrade.type === "auto") {
+      const nextTypeValue = state.autoPerSecond === 0 ? 1 : Math.min(MAX_TIER_VALUE, state.autoPerSecond * 10);
+      atCap = state.autoPerSecond >= MAX_TIER_VALUE;
+      descEl.textContent = atCap
+        ? "Max reached: 1,000,000,000 base auto ducks/sec"
+        : `Next tier: ${formatNumber(state.autoPerSecond)} -> ${formatNumber(nextTypeValue)} base auto ducks/sec (10x)`;
+    } else if (upgrade.type === "crit-chance") {
+      const nextChance = Math.min(0.6, state.critChance + upgrade.basePower);
+      atCap = state.critChance >= 0.6;
+      descEl.textContent = atCap
+        ? "Max reached: 60% critical chance"
+        : `Next tier: ${Math.round(state.critChance * 100)}% -> ${Math.round(nextChance * 100)}% crit chance`;
+    } else if (upgrade.type === "click-multiplier") {
+      const nextMultiplier = Math.min(8, state.clickMultiplier + upgrade.basePower);
+      atCap = state.clickMultiplier >= 8;
+      descEl.textContent = atCap
+        ? "Max reached: 8x click multiplier"
+        : `Next tier: ${state.clickMultiplier.toFixed(2)}x -> ${nextMultiplier.toFixed(2)}x click boost`;
+    } else if (upgrade.type === "auto-multiplier") {
+      const nextMultiplier = Math.min(8, state.autoMultiplier + upgrade.basePower);
+      atCap = state.autoMultiplier >= 8;
+      descEl.textContent = atCap
+        ? "Max reached: 8x auto multiplier"
+        : `Next tier: ${state.autoMultiplier.toFixed(2)}x -> ${nextMultiplier.toFixed(2)}x auto boost`;
     } else {
+      const nextMultiplier = Math.min(6, state.kingdomMultiplier + upgrade.basePower);
+      atCap = state.kingdomMultiplier >= 6;
       descEl.textContent = atCap
-        ? "Max reached: 1,000,000,000 auto ducks/sec"
-        : `Next tier: ${formatNumber(currentTypeValue)} -> ${formatNumber(nextTypeValue)} auto ducks/sec (10x)`;
+        ? "Max reached: 6x kingdom income"
+        : `Next tier: ${state.kingdomMultiplier.toFixed(2)}x -> ${nextMultiplier.toFixed(2)}x kingdom income`;
     }
     levelEl.textContent = String(upgrade.level);
     costEl.textContent = formatNumber(currentCost);
@@ -764,15 +1152,24 @@ function renderUpgrades() {
 
       if (upgrade.type === "click") {
         state.ducksPerClick = Math.min(MAX_TIER_VALUE, state.ducksPerClick * 10);
-      } else {
+      } else if (upgrade.type === "auto") {
         const autoBase = state.autoPerSecond === 0 ? 1 : state.autoPerSecond;
         state.autoPerSecond = Math.min(MAX_TIER_VALUE, autoBase * 10);
+      } else if (upgrade.type === "crit-chance") {
+        state.critChance = Math.min(0.6, state.critChance + upgrade.basePower);
+      } else if (upgrade.type === "click-multiplier") {
+        state.clickMultiplier = Math.min(8, state.clickMultiplier + upgrade.basePower);
+      } else if (upgrade.type === "auto-multiplier") {
+        state.autoMultiplier = Math.min(8, state.autoMultiplier + upgrade.basePower);
+      } else if (upgrade.type === "kingdom-multiplier") {
+        state.kingdomMultiplier = Math.min(6, state.kingdomMultiplier + upgrade.basePower);
       }
 
       updateStats();
       renderUpgrades();
       renderSkins();
       renderRanks();
+      renderKingdom();
       saveGame();
     });
 
@@ -827,11 +1224,327 @@ function renderSkins() {
   });
 }
 
+function renderKingdom() {
+  if (!kingdomList || !kingdomLevelEl || !kingdomPopulationEl || !kingdomIncomeEl) {
+    return;
+  }
+
+  const derivedPopulation = kingdomBuildings.reduce(
+    (sum, building) => sum + building.populationGain * building.count,
+    0,
+  );
+  if (state.kingdomPopulation < derivedPopulation) {
+    state.kingdomPopulation = derivedPopulation;
+  }
+
+  state.kingdomLevel = Math.max(1, Math.floor(state.kingdomPopulation / 100) + 1);
+  kingdomLevelEl.textContent = String(state.kingdomLevel);
+  kingdomPopulationEl.textContent = formatNumber(state.kingdomPopulation);
+  kingdomIncomeEl.textContent = formatNumber(getKingdomIncomePerSecond());
+
+  if (kingdomSection) {
+    const visualTier = Math.min(5, Math.max(1, Math.floor((state.kingdomLevel - 1) / 2) + 1));
+    kingdomSection.setAttribute("data-kingdom-tier", String(visualTier));
+  }
+
+  renderKingdomVisuals();
+
+  kingdomList.innerHTML = "";
+  kingdomBuildings.forEach((building) => {
+    const card = document.createElement("article");
+    card.className = "upgrade-card";
+
+    const cost = getKingdomBuildingCost(building);
+    const nextIncome = Math.floor(building.incomePerSecond * (building.count + 1) * state.kingdomMultiplier);
+
+    card.innerHTML = `
+      <div class="upgrade-info">
+        <h3>${building.name}</h3>
+        <p>${building.description}</p>
+        <p>Owned: ${formatNumber(building.count)} | Next income: ${formatNumber(nextIncome)} ducks/sec</p>
+      </div>
+      <div class="upgrade-actions">
+        <p class="upgrade-level">Population +${formatNumber(building.populationGain)}</p>
+        <p class="upgrade-cost">Cost: ${formatNumber(cost)} ducks</p>
+        <button class="upgrade-buy">Build</button>
+      </div>
+    `;
+
+    const buildButton = card.querySelector(".upgrade-buy");
+    buildButton.disabled = state.ducks < cost;
+    buildButton.addEventListener("click", () => {
+      if (state.ducks < cost) {
+        return;
+      }
+
+      state.ducks -= cost;
+      building.count += 1;
+      state.kingdomPopulation += building.populationGain;
+
+      updateStats();
+      renderUpgrades();
+      renderSkins();
+      renderRanks();
+      renderKingdom();
+      saveGame();
+    });
+
+    kingdomList.appendChild(card);
+  });
+
+  if (!kingdomFestivalButton || !kingdomFestivalMeta) {
+    return;
+  }
+
+  const now = Date.now();
+  const remainingMs = state.kingdomFestivalReadyAt - now;
+  if (remainingMs > 0) {
+    kingdomFestivalButton.disabled = true;
+    kingdomFestivalMeta.textContent = `Festival ready in ${Math.ceil(remainingMs / 1000)}s.`;
+  } else {
+    kingdomFestivalButton.disabled = false;
+    kingdomFestivalMeta.textContent = "Festival ready now.";
+  }
+}
+
+function createKingdomEntity(label, className, leftPercent, bottomPercent) {
+  if (!kingdomCityLayer) {
+    return;
+  }
+
+  const node = document.createElement("span");
+  node.className = `kingdom-entity ${className}`;
+  node.textContent = label;
+  const titleMap = {
+    "social-center": "Social Center",
+    "command-center": "Command Center",
+    harbor: "Harbor",
+    airdock: "Airship Dock"
+  };
+  node.title = titleMap[className] || className;
+  node.style.left = `${leftPercent}%`;
+  node.style.bottom = `${bottomPercent}%`;
+  kingdomCityLayer.appendChild(node);
+}
+
+function renderKingdomVisuals() {
+  if (!kingdomCityLayer) {
+    return;
+  }
+
+  const nestHuts = kingdomBuildings.find((item) => item.id === "nest-huts")?.count || 0;
+  const pondPlaza = kingdomBuildings.find((item) => item.id === "pond-plaza")?.count || 0;
+  const commandCenters = kingdomBuildings.find((item) => item.id === "quack-castle")?.count || 0;
+  const skyHarbors = kingdomBuildings.find((item) => item.id === "sky-harbor")?.count || 0;
+
+  const duckCount = Math.min(18, Math.max(3, Math.floor(state.kingdomPopulation / 18) + 2));
+  const visualStateKey = [nestHuts, pondPlaza, commandCenters, skyHarbors, duckCount].join("|");
+  if (visualStateKey === lastKingdomVisualKey) {
+    return;
+  }
+  lastKingdomVisualKey = visualStateKey;
+
+  kingdomCityLayer.innerHTML = "";
+
+  for (let index = 0; index < duckCount; index += 1) {
+    const duck = document.createElement("span");
+    duck.className = "kingdom-entity duck";
+    duck.textContent = "🦆";
+    const left = 8 + ((index * 11) % 84);
+    const bottom = 8 + (index % 2) * 2;
+    duck.style.left = `${left}%`;
+    duck.style.bottom = `${bottom}%`;
+    duck.style.animationDelay = `${((index % 7) * 0.14).toFixed(2)}s`;
+    duck.style.animationDuration = `${(2.2 + (index % 4) * 0.26).toFixed(2)}s`;
+    duck.setAttribute("role", "button");
+    duck.setAttribute("tabindex", "0");
+    duck.setAttribute("aria-label", "Talk to kingdom duck");
+    duck.title = "Talk to duck";
+
+    const talkToDuck = () => {
+      const now = Date.now();
+      const cooldownUntil = Number.parseInt(duck.dataset.cooldownUntil || "0", 10);
+      if (now < cooldownUntil) {
+        return;
+      }
+
+      duck.dataset.cooldownUntil = String(now + 650);
+      duck.classList.remove("is-talking");
+      void duck.offsetWidth;
+      duck.classList.add("is-talking");
+      showKingdomDuckDialogue(duck, getKingdomDuckLine());
+      window.setTimeout(() => duck.classList.remove("is-talking"), 380);
+    };
+
+    duck.addEventListener("click", talkToDuck);
+    duck.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        talkToDuck();
+      }
+    });
+
+    kingdomCityLayer.appendChild(duck);
+  }
+
+  const socialLane = [17, 32, 47, 62];
+  const socialCount = Math.min(4, pondPlaza);
+  for (let index = 0; index < socialCount; index += 1) {
+    createKingdomEntity("", "social-center", socialLane[index], 14 + (index % 2));
+  }
+
+  const commandLane = [56, 68, 80];
+  const commandCount = Math.min(3, commandCenters);
+  for (let index = 0; index < commandCount; index += 1) {
+    createKingdomEntity("", "command-center", commandLane[index], 15 + (index % 2));
+  }
+
+  const harborLane = [14, 26, 38, 50];
+  const harborCount = Math.min(4, Math.max(1, skyHarbors));
+  for (let index = 0; index < harborCount; index += 1) {
+    createKingdomEntity("", "harbor", harborLane[index], 10 + (index % 2));
+  }
+
+  const airdockLane = [66, 76, 86, 94];
+  const dockCount = Math.min(4, skyHarbors);
+  for (let index = 0; index < dockCount; index += 1) {
+    createKingdomEntity("", "airdock", airdockLane[index], 16 + (index % 2));
+  }
+}
+
+function playKingdomFestivalShow() {
+  if (!kingdomFestivalLayer || !kingdomSection) {
+    return;
+  }
+
+  kingdomFestivalLayer.innerHTML = "";
+  kingdomSection.classList.add("festival-live");
+
+  const banner = document.createElement("div");
+  banner.className = "kingdom-festival-banner";
+  banner.textContent = "Royal Duck Festival!";
+  kingdomFestivalLayer.appendChild(banner);
+
+  const confettiCount = 46;
+  for (let index = 0; index < confettiCount; index += 1) {
+    const confetti = document.createElement("span");
+    confetti.className = "kingdom-confetti";
+    confetti.style.left = `${Math.random() * 100}%`;
+    confetti.style.top = `${-8 - Math.random() * 20}px`;
+    confetti.style.background = `hsl(${Math.floor(Math.random() * 360)}, 92%, 62%)`;
+    confetti.style.animationDuration = `${(1.8 + Math.random() * 1.6).toFixed(2)}s`;
+    confetti.style.animationDelay = `${(Math.random() * 0.35).toFixed(2)}s`;
+    kingdomFestivalLayer.appendChild(confetti);
+  }
+
+  const spawnFireworkBurst = (left, top) => {
+    const burst = document.createElement("div");
+    burst.className = "kingdom-firework-burst";
+    burst.style.left = `${left}%`;
+    burst.style.top = `${top}%`;
+
+    const sparks = 12;
+    for (let sparkIndex = 0; sparkIndex < sparks; sparkIndex += 1) {
+      const spark = document.createElement("span");
+      spark.className = "kingdom-firework-spark";
+      const angle = (Math.PI * 2 * sparkIndex) / sparks;
+      const distance = 24 + Math.random() * 38;
+      spark.style.setProperty("--spark-x", `${Math.cos(angle) * distance}px`);
+      spark.style.setProperty("--spark-y", `${Math.sin(angle) * distance}px`);
+      spark.style.setProperty("--spark-hue", String(Math.floor(Math.random() * 360)));
+      burst.appendChild(spark);
+    }
+
+    kingdomFestivalLayer.appendChild(burst);
+    window.setTimeout(() => burst.remove(), 760);
+  };
+
+  spawnFireworkBurst(20, 28);
+  window.setTimeout(() => spawnFireworkBurst(50, 22), 120);
+  window.setTimeout(() => spawnFireworkBurst(76, 30), 240);
+  window.setTimeout(() => spawnFireworkBurst(35, 20), 360);
+  window.setTimeout(() => spawnFireworkBurst(64, 24), 520);
+
+  window.setTimeout(() => {
+    kingdomSection.classList.remove("festival-live");
+    kingdomFestivalLayer.innerHTML = "";
+  }, 4200);
+}
+
+function triggerKingdomFestival() {
+  const now = Date.now();
+  if (state.kingdomFestivalReadyAt > now) {
+    renderKingdom();
+    return;
+  }
+
+  const reward = Math.max(25, Math.floor(state.kingdomPopulation * 1.8 + getKingdomIncomePerSecond() * 6));
+  state.ducks += reward;
+  state.totalDucksEarned += reward;
+  state.kingdomFestivalReadyAt = now + KINGDOM_FESTIVAL_COOLDOWN_MS;
+  playKingdomFestivalShow();
+
+  updateStats();
+  showFloatingGain(reward);
+  maybeNotifyRankUp();
+  renderUpgrades();
+  renderSkins();
+  renderRanks();
+  renderKingdom();
+  saveGame();
+}
+
+function playKingdomEntryAnimation() {
+  if (!kingdomEntryFx) {
+    return;
+  }
+
+  kingdomEntryFx.innerHTML = "";
+  const wipeCount = 6;
+  for (let index = 0; index < wipeCount; index += 1) {
+    const panel = document.createElement("span");
+    panel.className = "kingdom-wipe-panel";
+    panel.style.left = `${index * 18}%`;
+    panel.style.animationDelay = `${(index * 0.055).toFixed(2)}s`;
+    panel.style.opacity = String(0.62 - index * 0.06);
+    kingdomEntryFx.appendChild(panel);
+  }
+
+  window.setTimeout(() => {
+    kingdomEntryFx.innerHTML = "";
+  }, 860);
+}
+
+function setKingdomPageMode(isKingdomPage) {
+  document.body.classList.toggle("kingdom-page-active", isKingdomPage);
+
+  if (heroSection) {
+    heroSection.hidden = isKingdomPage;
+  }
+
+  if (statsSection) {
+    statsSection.hidden = isKingdomPage;
+  }
+
+  if (clickZoneSection) {
+    clickZoneSection.hidden = isKingdomPage;
+  }
+}
+
 function setVisibleSection(sectionId) {
-  const allSections = [upgradesSection, skinsSection, ranksSection];
+  const allSections = [upgradesSection, skinsSection, ranksSection, kingdomSection];
   allSections.forEach((section) => {
     section.hidden = section.id !== sectionId;
   });
+
+  const enteringKingdom = sectionId === "kingdomSection";
+  setKingdomPageMode(enteringKingdom);
+
+  if (enteringKingdom && lastVisibleSectionId !== "kingdomSection") {
+    playKingdomEntryAnimation();
+  }
+
+  lastVisibleSectionId = sectionId;
 }
 
 function clearTutorialFocus() {
@@ -852,6 +1565,12 @@ function renderTutorialStep() {
 
   if (step.sectionId) {
     setVisibleSection(step.sectionId);
+  }
+
+  if (menuPanel && menuToggle) {
+    const shouldOpenMenu = Boolean(step.openMenu);
+    menuPanel.hidden = !shouldOpenMenu;
+    menuToggle.setAttribute("aria-expanded", String(shouldOpenMenu));
   }
 
   clearTutorialFocus();
@@ -909,6 +1628,11 @@ function openTutorial(fromStart = false) {
 function closeTutorial() {
   tutorialOverlay.setAttribute("aria-hidden", "true");
   clearTutorialFocus();
+
+  if (menuPanel && menuToggle) {
+    menuPanel.hidden = true;
+    menuToggle.setAttribute("aria-expanded", "false");
+  }
 }
 
 function completeTutorial() {
@@ -918,6 +1642,18 @@ function completeTutorial() {
 }
 
 function setupSectionMenu() {
+  function showHome() {
+    setVisibleSection("");
+
+    if (statsSection) {
+      statsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      statsSection.classList.remove("section-flash");
+      // Restart the animation each time Home is selected.
+      void statsSection.offsetWidth;
+      statsSection.classList.add("section-flash");
+    }
+  }
+
   function showSection(sectionToShow) {
     setVisibleSection(sectionToShow.id);
 
@@ -942,6 +1678,13 @@ function setupSectionMenu() {
   menuPanel.querySelectorAll(".menu-link").forEach((button) => {
     button.addEventListener("click", () => {
       const targetId = button.getAttribute("data-target");
+
+      if (targetId === "homeSection") {
+        showHome();
+        closeMenu();
+        return;
+      }
+
       const targetEl = document.getElementById(targetId);
 
       if (!targetEl) {
@@ -969,26 +1712,30 @@ function setupSectionMenu() {
 function setupGame() {
   loadGame();
   lastAnnouncedRankIndex = getCurrentRankIndex();
+  secretRankAnnounced = state.secretRankUnlocked;
   ensureSaveBootstrap();
   applySkin();
   updateStats();
   renderUpgrades();
   renderSkins();
   renderRanks();
+  renderKingdom();
 
   duckButton.addEventListener("click", () => {
     if (!state.hasPlayed) {
       state.hasPlayed = true;
     }
 
-    state.ducks += state.ducksPerClick;
-    state.totalDucksEarned += state.ducksPerClick;
+    const clickResult = getEffectiveClickGain();
+    state.ducks += clickResult.gain;
+    state.totalDucksEarned += clickResult.gain;
     updateStats();
-    showFloatingGain(state.ducksPerClick);
+    showFloatingGain(clickResult.gain);
     maybeNotifyRankUp();
     renderUpgrades();
     renderSkins();
     renderRanks();
+    renderKingdom();
     saveGame();
   });
 
@@ -1020,6 +1767,14 @@ function setupGame() {
 
   setupSectionMenu();
 
+  if (kingdomFestivalButton) {
+    kingdomFestivalButton.addEventListener("click", triggerKingdomFestival);
+  }
+
+  if (gameTitleEl) {
+    gameTitleEl.addEventListener("click", triggerSecretEasterEgg);
+  }
+
   if (!state.tutorialCompleted) {
     openTutorial(true);
   }
@@ -1037,17 +1792,20 @@ function setupGame() {
   });
 
   window.setInterval(() => {
-    if (state.autoPerSecond <= 0) {
+    const passiveGain = getEffectiveAutoPerSecond();
+    if (passiveGain <= 0) {
+      renderKingdom();
       return;
     }
 
-    state.ducks += state.autoPerSecond;
-    state.totalDucksEarned += state.autoPerSecond;
+    state.ducks += passiveGain;
+    state.totalDucksEarned += passiveGain;
     updateStats();
     maybeNotifyRankUp();
     renderUpgrades();
     renderSkins();
     renderRanks();
+    renderKingdom();
     saveGame();
   }, 1000);
 }

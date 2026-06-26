@@ -20,15 +20,17 @@
   </button>
 
   <nav id="menuPanel" class="menu-panel" aria-label="Sections" hidden>
-    <button class="menu-link" type="button" data-target="upgradesSection">Upgrades !</button>
-    <button class="menu-link" type="button" data-target="skinsSection">Skins !</button>
-    <button class="menu-link" type="button" data-target="ranksSection">Ranks !</button>
+    <button class="menu-link" type="button" data-target="homeSection">Home!</button>
+    <button class="menu-link" type="button" data-target="upgradesSection">Upgrades!</button>
+    <button class="menu-link" type="button" data-target="skinsSection">Skins!</button>
+    <button class="menu-link" type="button" data-target="ranksSection">Ranks!</button>
+    <button class="menu-link" type="button" data-target="kingdomSection">Kingdom!</button>
   </nav>
 
   <main class="app">
     <header class="hero">
-      <h1 class="game-title">Silly Ducks!</h1>
-      <p class="tagline">Click your duck. Grow your flock. Become absurdly quack-rich.</p>
+      <h1 id="gameTitle" class="game-title">Silly Ducks!</h1>
+      <p class="tagline">Click your duck. Grow your flock. Become absurdly quack-rich!</p>
     </header>
 
     <section class="stats" aria-label="Game stats">
@@ -56,7 +58,7 @@
 
     <section id="upgradesSection" class="upgrades" aria-label="Upgrades" hidden>
       <div class="upgrades-head">
-        <h2>Upgrades !</h2>
+        <h2>Upgrades!</h2>
         <p>Spend ducks to increase click speed and click value.</p>
       </div>
 
@@ -65,16 +67,57 @@
 
     <section id="skinsSection" class="upgrades" aria-label="Skins" hidden>
       <div class="upgrades-head">
-        <h2>Skins !</h2>
+        <h2>Skins!</h2>
         <p>Collect style points and unlock duck looks.</p>
       </div>
 
       <div id="skinList" class="upgrade-list"></div>
     </section>
 
+    <section id="kingdomSection" class="upgrades" aria-label="Duck Kingdom" hidden>
+      <div class="upgrades-head">
+        <h2>Duck Kingdom!</h2>
+        <p>Build your kingdom, grow your duck citizens, and host royal festivals for bonus ducks.</p>
+      </div>
+
+      <div id="kingdomEntryFx" class="kingdom-entry-fx" aria-hidden="true"></div>
+
+      <article class="upgrade-card rank-current-card kingdom-stats-card">
+        <div class="upgrade-info">
+          <h3>Kingdom Level: <span id="kingdomLevel">1</span></h3>
+          <p>Population: <span id="kingdomPopulation">0</span> ducks</p>
+          <p>Kingdom Income: <span id="kingdomIncome">0</span> ducks/sec</p>
+        </div>
+        <div class="upgrade-actions">
+          <button id="kingdomFestivalButton" class="upgrade-buy">Host Festival</button>
+          <p id="kingdomFestivalMeta" class="upgrade-level">Festival ready now.</p>
+        </div>
+      </article>
+
+      <div id="kingdomList" class="upgrade-list"></div>
+
+      <div class="kingdom-scene" aria-hidden="true">
+        <span class="kingdom-sun"></span>
+        <span class="kingdom-cloud cloud-a"></span>
+        <span class="kingdom-cloud cloud-b"></span>
+        <span class="kingdom-hill hill-back"></span>
+        <span class="kingdom-hill hill-front"></span>
+        <span class="kingdom-castle">
+          <span class="kingdom-duck-king">🦆</span>
+        </span>
+        <span class="kingdom-house house-a"></span>
+        <span class="kingdom-house house-b"></span>
+        <span class="kingdom-house house-c"></span>
+        <span class="kingdom-tower"></span>
+        <span class="kingdom-pond"></span>
+        <div id="kingdomCityLayer" class="kingdom-city-layer"></div>
+        <div id="kingdomFestivalLayer" class="kingdom-festival-layer"></div>
+      </div>
+    </section>
+
     <section id="ranksSection" class="upgrades" aria-label="Ranks" hidden>
       <div class="upgrades-head">
-        <h2>Ranks !</h2>
+        <h2>Ranks!</h2>
         <p>Climb the duck ladder based on your total ducks collected.</p>
       </div>
 
@@ -119,6 +162,11 @@
   </template>
 
   <button id="tutorialButton" class="tutorial-button" type="button" aria-label="Open tutorial">Tutorial</button>
+  <div class="tutorial-hint" aria-hidden="true">
+    <span class="tutorial-hint-arrow">↘</span>
+    <span class="tutorial-hint-text">don't know what to do?</span>
+    <span class="tutorial-hint-arrow">↘</span>
+  </div>
 
   <section id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
     <article class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
@@ -126,7 +174,7 @@
       <div class="tutorial-mascot-row">
         <div class="tutorial-mascot" aria-hidden="true">🦆</div>
         <div class="tutorial-speech">
-          <p id="tutorialStepMeta" class="tutorial-step-meta">Step 1 of 5</p>
+          <p id="tutorialStepMeta" class="tutorial-step-meta">Step 1 of 7</p>
           <p id="tutorialText" class="tutorial-text">Welcome to Silly Ducks!</p>
         </div>
       </div>
